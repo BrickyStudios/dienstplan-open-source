@@ -82,7 +82,7 @@ Alles, was Nurvo wissen muss, steht an einer Stelle: in den **Umgebungsvariablen
 Vercel. Es gibt keine weitere Konfigurationsdatei, die Sie bearbeiten müssen.
 
 1. Bei [vercel.com](https://vercel.com) mit dem GitHub-Konto anmelden.
-2. **Add New → Project** wählen und Ihre Kopie von `nurvo-community` importieren.
+2. **Add New → Project** wählen und Ihre Kopie von `dienstplan-open-source` importieren.
 3. Vor dem ersten Start unter **Environment Variables** diese vier Werte eintragen:
 
 | Variable | Wert |

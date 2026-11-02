@@ -1,26 +1,27 @@
-<h1 align="center">Nurvo Community Edition</h1>
+<h1 align="center">Dienstplan Open Source für Arztpraxen und MVZ</h1>
 
-<p align="center"><strong>Open-Source-Dienstplan für Arztpraxen und MVZ, selbst gehostet.</strong></p>
+<p align="center"><strong>Nurvo Community Edition: kostenlose Dienstplan-Software zum Selbsthosten, mit Prüfung nach Arbeitszeitgesetz.</strong></p>
 
 <p align="center">
   <a href="https://nextjs.org/"><img alt="Gebaut mit Next.js" src="https://img.shields.io/badge/gebaut_mit-Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"></a>
   <br>
-  <a href="LICENSE"><img alt="Lizenz AGPL-3.0" src="https://img.shields.io/github/license/BrickyStudios/nurvo-community?label=Lizenz&color=0E5C55"></a>
+  <a href="LICENSE"><img alt="Lizenz AGPL-3.0" src="https://img.shields.io/github/license/BrickyStudios/dienstplan-open-source?label=Lizenz&color=0E5C55"></a>
   <a href="docs/EINRICHTEN.md"><img alt="Self-Hosting mit Docker" src="https://img.shields.io/badge/Self--Hosting-Docker-0E5C55?logo=docker&logoColor=white"></a>
   <a href="https://supabase.com/"><img alt="Datenbank Supabase" src="https://img.shields.io/badge/Datenbank-Supabase-0E5C55?logo=supabase&logoColor=white"></a>
   <a href="https://www.nurvo.de/preise"><img alt="Gehostete Version" src="https://img.shields.io/badge/Gehostet-nurvo.de-0E5C55"></a>
-  <a href="https://github.com/BrickyStudios/nurvo-community/commits/main"><img alt="Letzter Commit" src="https://img.shields.io/github/last-commit/BrickyStudios/nurvo-community?label=letzter%20Commit&color=0E5C55"></a>
-  <a href="https://github.com/BrickyStudios/nurvo-community/stargazers"><img alt="GitHub-Sterne" src="https://img.shields.io/github/stars/BrickyStudios/nurvo-community?label=Sterne&color=0E5C55"></a>
+  <a href="https://github.com/BrickyStudios/dienstplan-open-source/commits/main"><img alt="Letzter Commit" src="https://img.shields.io/github/last-commit/BrickyStudios/dienstplan-open-source?label=letzter%20Commit&color=0E5C55"></a>
+  <a href="https://github.com/BrickyStudios/dienstplan-open-source/stargazers"><img alt="GitHub-Sterne" src="https://img.shields.io/github/stars/BrickyStudios/dienstplan-open-source?label=Sterne&color=0E5C55"></a>
 </p>
 
 <p align="center">
   <a href="docs/EINRICHTEN.md">Installation</a> ·
   <a href="docs/pdf/Nurvo-Community-Einrichten.pdf">Anleitung als PDF</a> ·
   <a href="docs/EINBINDEN.md">In die eigene Website einbinden</a> ·
+  <a href="https://www.nurvo.de/dienstplan-open-source">Überblick auf nurvo.de</a> ·
   <a href="https://www.nurvo.de/preise">Gehostete Version</a>
 </p>
 
-Plane Dienste im Browser und lass Ruhezeit, Höchstarbeitszeit und Urlaub schon beim Planen prüfen. Die Daten liegen auf deinem eigenen Server. Nurvo sieht sie nicht, und die Software ruft keinen Nurvo-Server auf.
+Dieser Open-Source-Dienstplan läuft auf deinem eigenen Server. Plane Dienste im Browser und lass Ruhezeit, Höchstarbeitszeit und Urlaub schon beim Planen prüfen. Nurvo sieht deine Daten nicht, und die Software ruft keinen Nurvo-Server auf.
 
 <p align="center">
   <img src="docs/bilder/1-dienstplan.png" width="240" alt="Nurvo Dienstplan auf dem Handy: Wochenansicht mit Regelprüfung für Ruhezeit, Höchstarbeitszeit und Urlaub">
@@ -73,7 +74,7 @@ Nurvo ist entwickelt von **[Lilian Philipp Schiffer](https://github.com/IDKWTTAA
 
 <details><summary>English</summary>
 
-Nurvo Community Edition is an open-source, self-hosted staff scheduling tool for medical practices in Germany. It checks working-time rules while you plan and keeps all data on your own server. The hosted version at [nurvo.de](https://www.nurvo.de/en) adds the native app, AI features and payroll.
+Nurvo Community Edition is an open-source, self-hosted staff scheduling tool for medical practices in Germany. It checks working-time rules while you plan and keeps all data on your own server. Overview (German): [nurvo.de/dienstplan-open-source](https://www.nurvo.de/dienstplan-open-source). The hosted version at [nurvo.de](https://www.nurvo.de/en) adds the native app, AI features and payroll.
 
 Built by **[Lilian Philipp Schiffer](https://github.com/IDKWTTAAN)** (lead developer, about 80 % of all commits) with co-founders Jonas Suthold and David. See [AUTHORS.md](AUTHORS.md).
 

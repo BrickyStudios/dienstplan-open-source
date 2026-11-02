@@ -3,9 +3,14 @@
 <p align="center"><strong>Open-Source-Dienstplan für Arztpraxen und MVZ, selbst gehostet.</strong></p>
 
 <p align="center">
-  <a href="LICENSE"><img alt="Lizenz AGPL-3.0" src="https://img.shields.io/badge/Lizenz-AGPL--3.0-0E5C55"></a>
-  <a href="docs/EINRICHTEN.md"><img alt="Self-Hosting mit Docker" src="https://img.shields.io/badge/Self--Hosting-Docker-0E5C55"></a>
+  <a href="https://nextjs.org/"><img alt="Gebaut mit Next.js" src="https://img.shields.io/badge/gebaut_mit-Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"></a>
+  <br>
+  <a href="LICENSE"><img alt="Lizenz AGPL-3.0" src="https://img.shields.io/github/license/BrickyStudios/nurvo-community?label=Lizenz&color=0E5C55"></a>
+  <a href="docs/EINRICHTEN.md"><img alt="Self-Hosting mit Docker" src="https://img.shields.io/badge/Self--Hosting-Docker-0E5C55?logo=docker&logoColor=white"></a>
+  <a href="https://supabase.com/"><img alt="Datenbank Supabase" src="https://img.shields.io/badge/Datenbank-Supabase-0E5C55?logo=supabase&logoColor=white"></a>
   <a href="https://www.nurvo.de/preise"><img alt="Gehostete Version" src="https://img.shields.io/badge/Gehostet-nurvo.de-0E5C55"></a>
+  <a href="https://github.com/BrickyStudios/nurvo-community/commits/main"><img alt="Letzter Commit" src="https://img.shields.io/github/last-commit/BrickyStudios/nurvo-community?label=letzter%20Commit&color=0E5C55"></a>
+  <a href="https://github.com/BrickyStudios/nurvo-community/stargazers"><img alt="GitHub-Sterne" src="https://img.shields.io/github/stars/BrickyStudios/nurvo-community?label=Sterne&color=0E5C55"></a>
 </p>
 
 <p align="center">

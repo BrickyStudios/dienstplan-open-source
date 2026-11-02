@@ -4,12 +4,12 @@ art: Rechtlicher Hinweis
 titel: Haftungsausschluss
 untertitel: Nurvo Community Edition, kostenlose und selbst betriebene Fassung
 empfaenger: alle, die die Nurvo Community Edition herunterladen, einrichten, betreiben oder verändern
-stand: 01.11.2026
+stand: 02.11.2026
 vertraulichkeit: Öffentlich
 absender: Nurvo (in Gründung)
 kolophon: |
   Dieser Hinweis ergänzt die Lizenz (LICENSE, GNU AGPL-3.0) und ersetzt sie nicht.
-  Bei Widersprüchen gilt die Lizenz. Quelle: HAFTUNGSAUSSCHLUSS.md im Repository.
+  Bei Widersprüchen gilt die Lizenz. Quelle: fuer-ki/HAFTUNGSAUSSCHLUSS.md im Repository.
 ---
 
 ## 1. Worum es geht
@@ -99,8 +99,8 @@ das auf eigenes Risiko.
 
 Für die Community Edition gibt es **keinen Anspruch** auf Support, Fehlerbehebung,
 Beratung, Einrichtung, Schulung oder eine bestimmte Reaktionszeit. Hinweise über GitHub
-werden nach freiem Ermessen beantwortet. Sicherheitslücken bitte vertraulich nach
-`SECURITY.md` melden.
+werden nach freiem Ermessen beantwortet. Sicherheitslücken bitte vertraulich melden, wie im
+Dokument „Sicherheit“ (`Nurvo-Community-Sicherheit.pdf`) beschrieben.
 
 ## 7. Software Dritter
 

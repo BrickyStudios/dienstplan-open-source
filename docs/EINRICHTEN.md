@@ -159,8 +159,8 @@ heißt das:
 - Mitarbeitende und, falls vorhanden, den Betriebsrat informieren, bevor der Plan
   eingeführt wird.
 - Die Regelprüfung (Ruhezeit, Höchstarbeitszeit, Urlaub) ist eine Hilfe beim Planen. Sie
-  ersetzt keine Rechtsberatung. Den vollständigen Haftungsausschluss enthält
-  `HAFTUNGSAUSSCHLUSS.md` im Repository.
+  ersetzt keine Rechtsberatung. Den vollständigen Haftungsausschluss enthält das PDF
+  `Nurvo-Community-Haftungsausschluss.pdf` im Hauptordner des Downloads.
 
 ## Alternative: Eigener Server mit Docker
 

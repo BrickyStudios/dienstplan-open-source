@@ -1,0 +1,29 @@
+# Zeilenenden: im Repo immer LF.
+#
+# Warum das hier steht: lib/LanguageContext.tsx lag als EINZIGE Quelldatei mit
+# CRLF im Repo. Zusammen mit core.autocrlf=true (Windows-Standard) zeigte git
+# dort bei jeder Aenderung rund 3200 geaenderte Zeilen statt vier. Das verdeckt
+# echte Arbeit, erzeugt einen Konflikt mit jeder anderen Sitzung, die die Datei
+# anfasst, und macht `git log -p` an dieser Stelle dauerhaft unlesbar.
+#
+# `text=auto` laesst git Binaerdateien selbst erkennen und in Ruhe lassen.
+* text=auto eol=lf
+
+# Ausdruecklich binaer — keine Zeilenenden-Behandlung, kein Diff-Versuch.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+
+# Der Film auf der Startseite (seit 20.09.2026). `text=auto` erkennt eine MP4 zwar
+# selbst an den Null-Bytes, aber diese Datei fuehrt die Typen ausdruecklich auf —
+# und auf eine Heuristik zu vertrauen, wo eine Zeile genuegt, ist genau die Art
+# Annahme, die den CRLF-Fall oben ueberhaupt erst erzeugt hat.
+*.mp4  binary
+*.webm binary

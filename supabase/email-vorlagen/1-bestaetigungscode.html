@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Ihr Bestätigungscode für Nurvo</title>
+</head>
+<body style="margin:0;padding:0;background:#F2F1EC;-webkit-text-size-adjust:100%;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#F2F1EC;">Ihr Code: {{ .Token }}</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F2F1EC;">
+    <tr>
+      <td align="center" style="padding:48px 16px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;">
+
+          <tr>
+            <td style="padding:0 4px 20px;font-family:Georgia,'Times New Roman',serif;font-size:26px;font-weight:600;letter-spacing:-0.5px;color:#1A1D1C;">
+              Nurv<span style="color:#14B8A6;">o</span>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="background:#FAF9F6;border:1px solid #E3E1DA;border-radius:14px;padding:40px 36px 36px;">
+              <h1 style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-size:26px;line-height:1.25;font-weight:600;letter-spacing:-0.3px;color:#1A1D1C;">
+                Bestätigen Sie Ihre E&#8209;Mail&#8209;Adresse
+              </h1>
+              <p style="margin:0 0 28px;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#4E5755;">
+                Geben Sie diesen Code auf der Seite ein, auf der Sie sich gerade registriert haben. Danach ist Ihr Konto aktiv.
+              </p>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" style="background:#EDF4F2;border-radius:10px;padding:26px 16px;">
+                    <div style="margin:0 0 8px;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#0E5C55;">
+                      Ihr Bestätigungscode
+                    </div>
+                    <div style="font-family:'SFMono-Regular',Consolas,'Courier New',monospace;font-size:34px;font-weight:700;letter-spacing:8px;color:#0E5C55;">
+                      {{ .Token }}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:24px 0 0;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.6;color:#66706E;">
+                Der Code gilt für <strong style="color:#4E5755;">{{ .Email }}</strong> und läuft nach kurzer Zeit ab. Ist er abgelaufen, fordern Sie auf der Anmeldeseite einfach einen neuen an.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:24px 4px 0;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#66706E;">
+              Sie haben sich nicht bei Nurvo registriert? Dann können Sie diese Mail ignorieren – ohne den Code passiert nichts.
+              <br><br>
+              Nurvo · Dienstplanung für Pflege und Klinik · <a href="https://www.nurvo.de" style="color:#0E5C55;text-decoration:none;">www.nurvo.de</a>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

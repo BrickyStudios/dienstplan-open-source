@@ -1,0 +1,16 @@
+# Reverse-Proxy + automatisches TLS (Let's Encrypt) für den Nurvo-Selfhost.
+# Voraussetzung: APP_DOMAIN und DB_DOMAIN zeigen per DNS auf diesen Server, Ports 80+443 offen.
+
+{$APP_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy app:3000
+}
+
+# Öffentliches Supabase-Gateway (Auth + PostgREST + Storage laufen dahinter über Kong).
+{$DB_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy kong:8000
+}
+
+# Hinweis: Das Supabase-Studio (Admin-UI) NICHT öffentlich exponieren — nur über VPN/SSH-Tunnel
+# auf den internen Port des `studio`-Containers zugreifen.

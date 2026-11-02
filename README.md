@@ -1,0 +1,69 @@
+<h1 align="center">Nurvo Community Edition</h1>
+
+<p align="center"><strong>Open-Source-Dienstplan für Arztpraxen und MVZ, selbst gehostet.</strong></p>
+
+<p align="center">
+  <a href="LICENSE"><img alt="Lizenz AGPL-3.0" src="https://img.shields.io/badge/Lizenz-AGPL--3.0-0E5C55"></a>
+  <a href="docs/EINRICHTEN.md"><img alt="Self-Hosting mit Docker" src="https://img.shields.io/badge/Self--Hosting-Docker-0E5C55"></a>
+  <a href="https://www.nurvo.de/preise"><img alt="Gehostete Version" src="https://img.shields.io/badge/Gehostet-nurvo.de-0E5C55"></a>
+</p>
+
+<p align="center">
+  <a href="docs/EINRICHTEN.md">Installation</a> ·
+  <a href="docs/pdf/Nurvo-Community-Einrichten.pdf">Anleitung als PDF</a> ·
+  <a href="docs/EINBINDEN.md">In die eigene Website einbinden</a> ·
+  <a href="https://www.nurvo.de/preise">Gehostete Version</a>
+</p>
+
+Plane Dienste im Browser und lass Ruhezeit, Höchstarbeitszeit und Urlaub schon beim Planen prüfen. Die Daten liegen auf deinem eigenen Server. Nurvo sieht sie nicht, und die Software ruft keinen Nurvo-Server auf.
+
+## Was enthalten ist
+
+| | Community Edition | [Gehostet bei Nurvo](https://www.nurvo.de/preise) |
+|---|---|---|
+| Dienstplan mit Regelprüfung | ✓ | ✓ |
+| Mitarbeitende, Urlaub, Wünsche | ✓ | ✓ |
+| Mitarbeiter-Ansicht im Browser | ✓ | ✓ |
+| Zeiterfassung | ✓ | ✓ |
+| Native App | | ✓ |
+| KI-Funktionen | | ✓ |
+| Lohnabrechnung | | ✓ |
+| Personalakte, Notfallplan | | ✓ |
+| Betrieb, Updates, Backups, Support | selbst | ✓ |
+
+## Schnellstart
+
+Zwei Wege, beide ohne Nurvo-Server und ohne Nurvo-Lizenzschlüssel:
+
+- **Ohne eigenen Server:** Datenbank bei Supabase (Region Frankfurt), Web-App bei Vercel. Die Schlüssel deiner eigenen Datenbank trägst du an einer einzigen Stelle ein, in den Umgebungsvariablen bei Vercel. Schritt für Schritt: [Anleitung einrichten (PDF)](docs/pdf/Nurvo-Community-Einrichten.pdf) · [Markdown](docs/EINRICHTEN.md)
+- **Eigener Server mit Docker:** [selfhost/README.md](selfhost/README.md)
+
+Danach meldet sich das Team unter deiner eigenen Adresse an, zum Beispiel `dienstplan.deine-praxis.de`.
+
+## Auf der eigenen Website zeigen
+
+Betreibe den Plan unter einer Subdomain wie `dienstplan.deine-praxis.de` und verlinke ihn von deiner Website. Wie das geht und wann ein iframe funktioniert: [Website anbinden (PDF)](docs/pdf/Nurvo-Community-Website-anbinden.pdf) · [Markdown](docs/WEBSITE-ANBINDEN.md)
+
+## Grenzen
+
+- Die Regelprüfung ist eine Hilfe und ersetzt keine Rechtsberatung. Vollständig: [Haftungsausschluss](HAFTUNGSAUSSCHLUSS.md) ([PDF](docs/pdf/Nurvo-Community-Haftungsausschluss.pdf)).
+- Wer die Software betreibt, ist für Datenschutz, Backups und Updates verantwortlich. Das gilt auch für den Vertrag mit Beschäftigten und Betriebsrat.
+- Sicherheitslücken bitte vertraulich melden: [SECURITY.md](SECURITY.md).
+
+## Wer Nurvo baut
+
+Nurvo ist entwickelt von **[Lilian Philipp Schiffer](https://github.com/IDKWTTAAN)**, technischer Mitgründer und Hauptentwickler. Von den rund 1.300 Commits im Nurvo-Hauptrepository stammen über 1.000 von ihm. Mitgründer sind Jonas Suthold und David. Alle Beteiligten stehen in [AUTHORS.md](AUTHORS.md).
+
+## Lizenz
+
+[AGPL-3.0](LICENSE). Wer die Software verändert und als Dienst anbietet, muss den geänderten Quellcode offenlegen. Der Name Nurvo und das Logo sind von dieser Lizenz nicht umfasst.
+
+---
+
+<details><summary>English</summary>
+
+Nurvo Community Edition is an open-source, self-hosted staff scheduling tool for medical practices in Germany. It checks working-time rules while you plan and keeps all data on your own server. The hosted version at [nurvo.de](https://www.nurvo.de/en) adds the native app, AI features and payroll.
+
+Built by **[Lilian Philipp Schiffer](https://github.com/IDKWTTAAN)** (lead developer, about 80 % of all commits) with co-founders Jonas Suthold and David. See [AUTHORS.md](AUTHORS.md).
+
+</details>

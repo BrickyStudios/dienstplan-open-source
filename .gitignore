@@ -1,0 +1,76 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+.gstack/
+.env*.local
+
+# local-only Claude sync bridge (see README-DELETE-AFTER-SYNC.md) — never on GitHub
+.claude/_sync-new-device/
+
+# machine-local skill symlinks (absolute paths) — regenerate from .agents/skills + skills-lock.json
+#
+# OHNE Schraegstrich am Ende, und das ist der Punkt: `.claude/skills/` passt nur auf
+# ein VERZEICHNIS dieses Namens. Hier steht aber ein Symlink, und der ist fuer git
+# kein Verzeichnis — die Regel ging ins Leere. Am 18.09.2026 ist er deshalb in
+# `8bebb888` mitgewandert. Auf Windows (core.symlinks=false) checkt git ihn dann als
+# 17-Byte-Textdatei aus, der Symlink ist weg und die Design-Skills laden nicht mehr
+# (AGENTS.md, Stolperfalle 1).
+.claude/skills
+.claude/worktrees/
+
+# Interne Sicherheitsunterlagen — gehoeren nicht ins Repo
+_private/
+
+
+# Schriften-Cache fuer Banner und Profilbild (646 KB base64, wird bei Bedarf neu
+# geholt). Lag bis 19.09.2026 unter docs/marke/linkedin/, seit dem teilen sich beide
+# Skripte einen Cache in docs/marke/.
+docs/marke/.schriften.css
+docs/marke/linkedin/.schriften.css
+docs/marke/linkedin/*.html
+docs/marke/profilbild/*.html
+# Kontrollbilder sind Pruefwerkzeug, kein Ergebnis — sie entstehen mit --kontrolle
+# beziehungsweise bei jedem Lauf von profilbild/bauen.mjs.
+docs/marke/linkedin/*-kontrolle.png
+docs/marke/profilbild/kontrolle.png
+
+# OCR-/PDF-Arbeitsdateien fuer den Browser — kopiert scripts/ocr-dateien.mjs vor dev/build aus node_modules
+public/ocr/

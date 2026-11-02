@@ -1,0 +1,601 @@
+@import "tailwindcss";
+
+@theme {
+  /* Radien nach Handbuch 5.1 und 5.4.
+     Hier stand bis zum 14.09.2026 ein halb umgesetztes Material-3-System: rund
+     zwanzig Tokens (--color-surface-container-high und Geschwister) plus eine
+     Umdefinition von slate-400. Kein einziges davon wurde noch benutzt — weder
+     als CSS-Variable noch ueber eine Tailwind-Klasse wie bg-surface. Der
+     Kommentar daneben behauptete seit dem 07.09., sie blieben stehen, "weil
+     noch Code darauf zeigt". Das stimmte nicht mehr; nachgesehen statt
+     geglaubt.
+
+     Geblieben sind die Radien, aber nicht die alten Werte. Sie zwangen JEDES
+     rounded-* im Produkt auf hoechstens 4 px — auch die Knoepfe, fuer die
+     Handbuch 5.1 acht vorsieht, und die Karten, fuer die 5.4 zwoelf vorsieht.
+     Ein Block, der eine Handbuchregel fuer die ganze Anwendung aushebelt, ist
+     kein Detail. */
+  --radius-sm:  4px;   /* Chips, Marker */
+  --radius:     8px;
+  --radius-md:  8px;
+  --radius-lg:  8px;   /* Knoepfe, Felder — Handbuch 5.1 und 5.3 */
+  --radius-xl:  12px;  /* Karten — Handbuch 5.4 */
+  --radius-2xl: 12px;
+  --radius-3xl: 12px;
+
+  /* Handbuch 6: ease-out ist bei uns diese Kurve. Die eingebaute startet zu zahm.
+     Ueberschreibt Tailwinds ease-out, damit jede Stelle denselben Wert erbt. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* Handbuch 6, Ein- und Ausblenden: 180 ms. Genutzt im KI-Copilot-Ergebnis. */
+  --animate-fade-in: fade-in 180ms var(--ease-out) both;
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+  }
+}
+
+/* Handbuch 6: Dialoge blenden in 180 ms ein, die Fläche wächst von .97 auf 1 aus der
+   Mitte (ein Dialog hängt an keinem Auslöser). Schließen ist sofort: Wer schließt, will
+   weiter. @starting-style statt JS; ohne Unterstützung erscheint der Dialog wie bisher. */
+.modal-grund {
+  transition: opacity 180ms var(--ease-out);
+  @starting-style { opacity: 0; }
+}
+.modal-flaeche {
+  transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
+  @starting-style { opacity: 0; transform: scale(0.97); }
+}
+
+/* Ein offener Dialog hat Vorrang vor dem Cookie-Hinweis. Bis 25.10.2026 lag die Leiste
+   (z-60) unabgedunkelt über Dialogen mit niedrigerem z-index (Setup z-50) und verdeckte
+   deren untere Hälfte samt Knöpfen. Statt jeden Dialog einzeln über die Leiste zu heben:
+   solange irgendwo ein modaler Dialog offen ist, tritt die Leiste zurück und kommt beim
+   Schließen wieder. Ohne :has() (sehr alte Browser) bleibt es beim bisherigen Verhalten. */
+body:has([role="dialog"][aria-modal="true"]) .cookie-leiste {
+  display: none;
+}
+
+/* Der Hinweis steht seit 01.11.2026 im ausgelieferten HTML und ein Skript im <head> setzt
+   data-cookie-offen, solange nichts entschieden ist. So malt er mit dem ersten Bild statt
+   erst nach der Hydration: Er war auf dem Handy das größte Element und damit der LCP. */
+html:not([data-cookie-offen]) .cookie-leiste {
+  display: none;
+}
+
+/* Die Stand-Zeile der Verkaufsseiten macht die feste Kopfzeile 44 px höher (MarketingNav). */
+html:has([data-stand-zeile]) {
+  scroll-padding-top: 44px;
+}
+
+/* Handbuch 6, Handy und Tablet: kein grauer Tipp-Blitz, kein 300-ms-Warten auf
+   Doppeltipp, Knopftexte nicht markierbar. In @layer base, damit jede
+   Tailwind-Klasse am Element weiterhin gewinnt. */
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  :where(a, button, summary, label, [role="button"], [role="switch"]) { touch-action: manipulation; }
+  :where(button, summary, [role="button"], [role="switch"]) { -webkit-user-select: none; user-select: none; }
+
+  /* Handbuch 2.3: Pflegepersonalbemessungsverordnung passt bei 320 px in keine Zeile.
+     Ohne Trennung schob das Wort sieben Seiten seitwaerts (break-ui, 09.10.2026).
+     Ueberschriften trennen immer, Fliesstext nur schmal: am Desktop bleibt die Satzkante. */
+  :where(h1, h2, h3, h4, dt) { hyphens: auto; overflow-wrap: break-word; }
+  :where(p, li, dd, td) { overflow-wrap: break-word; }
+  @media (max-width: 40rem) { :where(p, li, dd) { hyphens: auto; } }
+}
+
+/* ── Design-Tokens ────────────────────────────────────────────────────────────
+   Verbindlich laut docs/DESIGN-HANDBUCH.md, Abschnitt 3.
+
+   Die Material-3-Tokens weiter oben (--color-surface-container-high und die
+   uebrigen zwanzig) bleiben vorerst stehen, weil noch Code darauf zeigt. Neue
+   Arbeit benutzt ausschliesslich die Werte hier. Material 3 ist ein
+   Android-System mit einer Hoehen- und Tonalflaechenordnung, die wir nirgends
+   einloesen — herausgekommen ist eine Palette, aus der sich niemand traute
+   etwas zu benutzen. */
+:root {
+  /* Papier — der Grund. Kein reines Weiss: das ist die kontrastreichste und
+     damit anstrengendste Flaeche, die es gibt, und in einem Stationszimmer mit
+     Deckenleuchte und Tageslicht auf dem Schirm die falsche. Minimal
+     gruenstichig, damit der Grund zum Akzent gehoert. */
+  --papier:        #FAF9F6;
+  --papier-tief:   #F2F1EC;
+  --linie:         #E3E1DA;   /* Haarlinie — KEIN Textwert (1,2:1) */
+
+  /* Tinte — kein Schwarz. Alle Werte gegen --papier gerechnet, nicht geschaetzt. */
+  --tinte:         #1A1D1C;   /* 16,1:1 — Ueberschriften, Haupttext */
+  --tinte-matt:    #4E5755;   /*  7,1:1 — Fliesstext, sekundaere Aussagen */
+  /* Gegen ALLE drei Flaechen gerechnet, nicht nur gegen --papier: Der erste
+     Wert (#687370) erreichte auf --papier-tief nur 4,34:1 und riss damit AA
+     ueberall dort, wo Mikrotext in einer zurueckgesetzten Karte steht — also an
+     den meisten Stellen, an denen er ueberhaupt vorkommt. */
+  --tinte-leise:   #66706E;   /* 4,9:1 auf Papier · 4,5:1 auf Papier-tief · 4,6:1 auf Akzentflaeche */
+
+  /* Akzent. Das bisherige #0F766E war auf Weiss richtig und auf Papier zu laut. */
+  --akzent:        #0E5C55;   /*  7,4:1 · Weiss darauf 7,8:1 */
+  --akzent-tief:   #0A4640;   /* 10,2:1 — Hover */
+  --akzent-flaeche:#EDF4F2;
+
+  /* Markenfarbe — ausschliesslich fuer das „o" der Wortmarke (components/Wortmarke.tsx).
+     Bewusst heller und gesaettigter als --akzent: Der Akzent ist eine Arbeitsfarbe,
+     die sich in Knoepfen und Links zurueckhalten muss; die Marke darf an genau einer
+     Stelle herausstechen. Auf dunklem Grund traegt das „o" stattdessen --marke-hell,
+     weil das dunkle Teal dort verschwaende. */
+  --marke:      #14B8A6;
+  --marke-hell: #5EEAD4;
+
+  /* Signal. Bewusst gedeckt: Ein Regelverstoss braucht keine Warnwestenfarbe,
+     um ernst genommen zu werden — er braucht das Wort daneben. */
+  --gefahr:  #A4302A;   /* 6,6:1 */
+  --warnung: #8A5A12;   /* 5,6:1 */
+  --ok:      #2E6B43;   /* 6,0:1 */
+
+  /* Fokus. Vom 16.09. bis 18.09.2026 stand hier das GOV.UK-Gelb #FFEB3B. Es ist
+     technisch der sicherste Wert, aber es gehoert sichtbar nicht zu dieser Palette:
+     Auf Papier-Beige und Dunkelgruen wirkt ein Warnwestengelb wie ein Fehler, und
+     genau so ist es auch gemeldet worden. Entscheidung des Founders am 18.09.2026:
+     zurueck auf die Akzentfarbe.
+
+     Der Grund fuer das Gelb faellt damit nicht weg — ein gruener Ring auf einem
+     gruenen Knopf waere unsichtbar. Er wird anders geloest: Der Ring sitzt 2 px
+     ausserhalb des Kastens, und der Spalt dazwischen wird mit --papier gefuellt
+     (--tinte auf dunklen Flaechen). Damit liegt IMMER eine helle Trennlinie
+     zwischen Knopf und Ring, auch wenn beide dieselbe Farbe haben. Der
+     Nicht-Text-Kontrast nach WCAG 1.4.11 kommt dann von dieser Trennlinie
+     (7,8:1 gegen den Akzent), nicht von der Ringfarbe allein. */
+  --fokus:   #0E5C55;   /* = --akzent · 7,4:1 auf Papier */
+
+  /* ── Getoente Signalflaechen ────────────────────────────────────────────────
+     Nachgetragen am 14.09.2026. Handbuch 3.2 nannte --gefahr/--warnung/--ok nur
+     als Textfarben. Ueberall, wo ein Zustand eine Flaeche brauchte — Statuschips
+     der Roadmap, die Badges im Produkt, die App-Vorschauen im Verkaufsauftritt —
+     griff der Code deshalb zu bg-emerald-50, bg-amber-50, bg-rose-50, also genau
+     zu den Tailwind-Standardfarben, die Abschnitt 3.4 streicht. Eine Luecke in
+     der Palette wird nicht dadurch geschlossen, dass man sie ignoriert.
+
+     Jeder Wert ist gegen DREI Dinge gerechnet, nicht gegen eines: die Signalfarbe
+     darauf, --tinte und --tinte-leise. Der erste Entwurf war eine Stufe dunkler
+     (#F5E4E2 / #F5EDDB / #E4EEE6) und riss damit genau dort, wo Abschnitt 3.2 es
+     schon einmal beschreibt: Mikrotext in --tinte-leise fiel auf 4,2 bis 4,4:1.
+     Aufgefallen ist das erst im automatischen Kontrastdurchlauf ueber die
+     gerenderten Seiten — am Reissbrett sieht man es nicht. Jetzt tragen alle
+     sechs Flaechen der Palette (Papier, Papier-tief, Akzent- und die drei
+     Signalflaechen) --tinte-leise ueber 4,5:1. Die Flaechen sind ABSICHTLICH kaum vom Grund zu unterscheiden (rund
+     1,1:1): Sie gruppieren, sie melden nicht. Gemeldet wird durch das Wort und
+     die Kante in der Signalfarbe — Abschnitt 1, Folgerung 2 und Abschnitt 5.5.
+     Eine Flaeche, die allein den Zustand traegt, waere bei Rotschwaeche und auf
+     einem alten TN-Panel keine Information. */
+  --gefahr-flaeche:  #FAF0EF;   /* --gefahr 6,2:1 · --tinte-leise 4,6:1 · --tinte 15,2:1 */
+  --warnung-flaeche: #FAF5EB;   /* --warnung 5,4:1 · --tinte-leise 4,7:1 · --tinte 15,6:1 */
+  --ok-flaeche:      #EFF5F0;   /* --ok 5,8:1 · --tinte-leise 4,6:1 · --tinte 15,4:1 */
+
+  /* ── Dunkler Grund ──────────────────────────────────────────────────────────
+     Ebenfalls nachgetragen am 14.09.2026, und ebenfalls, weil die Luecke Schaden
+     angerichtet hat. Der Verkaufsauftritt hat genau eine dunkle Flaeche: die
+     Ergebniskarte im Business-Case-Rechner. Sie darf bleiben — sie traegt die
+     Antwort und schmueckt nicht —, aber sie hatte keine Farben. Sie behalf sich
+     mit --marke-hell, das laut Abschnitt 2b ausschliesslich dem „o" der
+     Wortmarke gehoert, und mit amber-300 aus dem Tailwind-Standard.
+
+     Kein eigener Grundton: Der dunkle Grund IST --tinte. Was hier steht, sind
+     nur die vier Werte, die darauf lesbar sein muessen. Alle gegen #1A1D1C
+     gerechnet. */
+  --auf-tinte:         #FAF9F6;   /* 16,1:1 — Haupttext, dasselbe Papier wie der Grund */
+  --auf-tinte-matt:    #AAB0AE;   /*  7,7:1 — Beschriftungen, klar leiser */
+  --auf-tinte-akzent:  #7FD9CE;   /* 10,3:1 — der Akzent, aufgehellt; NICHT die Marke */
+  --auf-tinte-warnung: #E8C07A;   /*  9,9:1 — Grenzwert erreicht */
+
+  /* ── Die KI-Farbe ───────────────────────────────────────────────────────────
+     Nachgetragen am 14.09.2026. Sie gehoert NUR der Anwendung hinter dem Login
+     (Handbuch 3.6): KI-Ausgaben muessen nach Art. 50 KI-VO gekennzeichnet sein,
+     und diese Kennzeichnung darf nicht aussehen wie eine Arbeitsfarbe. Der
+     Verkaufsauftritt fuehrt sie nur an der einen Stelle, an der er eine echte
+     KI-Ausgabe zeigt.
+
+     Vorher standen dafuer ZWEI Familien nebeneinander: violet-* (13 Stellen) und
+     purple-* (32). Handbuch 2.1 verbietet zwei Familien fuer dieselbe Aufgabe —
+     die Regel stand bisher nur bei der Schrift, sie gilt fuer Farbe genauso.
+     Beide waren ausserdem Tailwind-Standard und damit ungemessen. */
+  --ki:         #5B21B6;   /* 8,5:1 auf Papier · 7,9:1 auf Papier-tief · weiss darauf 9,0:1 */
+  --ki-flaeche: #F4F0FA;   /* --ki 8,0:1 · --tinte-leise 4,6:1 · --tinte 15,1:1 */
+
+  /* Abstandsleiter. Zwischenwerte gibt es nicht. */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-6: 24px; --s-8: 32px; --s-12: 48px; --s-16: 64px; --s-24: 96px;
+}
+
+/* Die Stimme: nur H1 und H2 der Marketing-Seiten. Handbuch 2.2. */
+.stimme {
+  font-family: var(--font-newsreader), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-optical-sizing: auto;
+}
+
+/* Fokus: Ring in der Akzentfarbe, abgesetzt durch einen hellen Spalt.
+
+   Das Problem, das der Spalt loest: Ein Ring in der Akzentfarbe liegt auf einem
+   Knopf in der Akzentfarbe genau dort nicht an, wo er gebraucht wird. Statt
+   deshalb die Farbe zu wechseln (bis 18.09.2026: GOV.UK-Gelb, siehe --fokus),
+   sitzt der Ring 2 px ausserhalb des Kastens; der box-shadow fuellt diesen Spalt
+   mit --papier. Zwischen Knopf und Ring liegt damit immer eine helle Linie —
+   das ist der zweite Kanal nach WCAG 1.4.11, unabhaengig von der Ringfarbe.
+
+   Kein `border-radius` hier: Der Spalt-Schatten folgt der Rundung des Elements,
+   und eine erzwungene Rundung von 2 px liesse runde Knoepfe beim Fokussieren
+   eckig werden.
+
+   :focus-visible statt :focus — der Ring erscheint bei Tastatur- und
+   Assistenzbedienung, nicht bei jedem Mausklick. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible,
+.focus\:outline-none:focus-visible,
+.outline-none:focus-visible {
+  outline: 3px solid var(--fokus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--papier);
+}
+
+/* WCAG 2.2, 2.4.11: Nichts darf den fokussierten Bereich verdecken. Bei uns
+   konkret die klebende Kopfzeile — deshalb Scroll-Abstand statt Ueberdeckung. */
+:where(a, button, input, select, textarea, summary, [tabindex]) {
+  scroll-margin-top: 88px;
+}
+
+/* Handbuch 6: Bewegung erklaert Veraenderung, sie unterhaelt nicht.
+   Vestibulaere Stoerungen sind in der Altersgruppe unserer Nutzerinnen nicht
+   selten, und in einer Ausfallsituation will niemand auf eine Animation warten. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Sicherheitsnetz: Padding zählt nie zur Gesamtbreite (Tailwind setzt das zwar
+   schon per Preflight, aber wir erzwingen es explizit gegen Fremd-CSS/Widgets). */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Kein horizontales Verschieben — Seite bleibt „in der Schiene" fixiert.
+     hidden (statt clip) wird von JEDEM Browser inkl. iOS-Safari < 16 unterstützt;
+     clip wurde dort ignoriert und der ungewollte Scrollbalken blieb. */
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  background: var(--papier);
+  color: var(--tinte);
+  font-family: var(--font-geist), 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Tabellarische Ziffern als Grundeinstellung. Handbuch 2.4: Alles, was in einer
+     Spalte untereinander steht oder sich beim Aktualisieren aendert, braucht feste
+     Ziffernbreiten — Stundenwerte, Preise, Datumsangaben, Zaehler. Als Ausnahme
+     statt als Regel wird es an drei von vier Stellen vergessen. */
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  /* Kein overflow-x hier.
+
+     <html> und <body> tragen beide h-full, also height:100%. Zusammen mit einem
+     overflow-Wert auf dem body wird der body zu einem eigenen Scroll-Container
+     von genau Fensterhoehe: Der Inhalt scrollt dann *im* body, und window.scrollY
+     bleibt fuer immer 0. Gemessen am 08.09.2026 auf der Startseite —
+     document.body.scrollTop stand bei 5918, window.scrollY bei 0.
+
+     Das trifft jeden, der die Scrollposition liest. Konkret das Einklappen des
+     Kontakt-Knopfs auf dem Handy: Die Bedingung window.scrollY > 32 wurde nie
+     wahr, der Knopf blieb ausgeklappt und deckte weiter die untere rechte Ecke ab
+     — also genau das, was der Umbau beheben sollte.
+
+     Die waagerechte Klammer sitzt schon auf <html>, und von dort wird sie auf den
+     Viewport uebertragen. Der zweite Wert hier war nie noetig. */
+  max-width: 100%;
+  width: 100%;
+  position: relative;
+}
+
+/* Abzulesendes und Abzutippendes: Einladungscodes, Wiederherstellungsphrasen,
+   Personalnummern, Schichtkuerzel im Raster, Uhrzeiten und Stundenwerte in
+   Tabellen. Begruendung in docs/DESIGN-HANDBUCH.md, Abschnitt 2.1 — Geist
+   unterscheidet I/l/1 und 0/O nicht, und das laesst sich nicht per
+   OpenType-Feature nachruesten (geprueft: slashed-zero, ss01-ss03, cv01-cv06
+   veraendern in Geist kein Zeichen). */
+.tt {
+  font-family: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-variant-numeric: tabular-nums slashed-zero;
+  letter-spacing: 0.01em;
+}
+
+/* Icon-Font, selbst ausgeliefert aus public/fonts/.
+
+   Bis 11.09.2026 kam sie bei JEDEM Seitenaufruf von fonts.googleapis.com — auch in der
+   eingeloggten Anwendung und bevor jemand dem Cookie-Banner zugestimmt hatte. Damit ging
+   die IP-Adresse jedes Nutzers ungefragt an Google; das LG München I hat genau diese
+   dynamische Einbindung am 20.01.2022 (Az. 3 O 17493/20) für rechtswidrig gehalten. Für
+   Kliniken in öffentlicher Trägerschaft ist so etwas im Beschaffungsfragebogen ein
+   Ausschlusskriterium.
+
+   Es sind dieselben Bytes wie vorher (Google liefert bei gepinnten Achsen genau diese
+   Datei), nur von der eigenen Domain. Der Textfont läuft schon seit jeher über next/font.
+
+   font-display: block ist hier bewusst richtig und NICHT swap: Die Icons sind Ligaturen.
+   swap würde den Ligatur-Namen als Wort rendern („dashboard", „monitor_heart"), bis die
+   Font da ist. Weil die Datei jetzt vom selben Server kommt und vorgeladen wird, ist das
+   Zeitfenster ohnehin sehr kurz. */
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('/fonts/material-symbols-outlined.woff2') format('woff2');
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+  user-select: none;
+  /* Ligatur-Namen sind lange Wörter — ohne feste Breite springt das Layout, sobald
+     die Icon-Font greift. min-width hält den Platz auf Icon-Breite. */
+  min-width: 1em;
+}
+
+/* Handbuch 5.4: Rahmen --linie, Radius 12, Innenabstand 24, KEIN Schlagschatten.
+   Vorher: reines Weiss (3.1 verbietet es), Rand #c6c6cd (kuehles Grau, 3.4
+   gestrichen), Radius 4 und eine box-shadow-Transition, deren Schatten es seit
+   heute nicht mehr gibt — sie hat auf jeder Karte eine Eigenschaft animiert,
+   die sich nie aenderte. */
+.card {
+  background: var(--papier);
+  border-radius: 12px;
+  border: 1px solid var(--linie);
+  padding: 24px;
+}
+
+.stat-card {
+  background: var(--papier);
+  border-radius: 12px;
+  border: 1px solid var(--linie);
+  /* 20 steht nicht auf der Abstandsleiter (Handbuch 4). 24 schon. */
+  padding: 24px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Badges sind die Statussprache des Produkts (PPBV-Stand, Schichtart,
+   Genehmigung). Sie werden um 6 Uhr morgens unter Neonlicht auf fünf Jahre alten
+   TN-Panels gelesen — die Vordergrundfarben liegen deshalb alle über 4.5:1 auf
+   ihrem eigenen Hintergrund, gemessen, nicht geschätzt.
+   Vorher: yellow 2.87:1, green 3.27:1, red 4.0:1, blue 4.24:1, gray 4.21:1. */
+/* Umgestellt am 14.09.2026: Die Werte waren gemessen, aber sie gehoerten zu
+   keiner Palette — sechs Handfarben neben den Tokens. Jetzt die Signalfarben
+   aus Handbuch 3.2 und 3.5, mit denselben Bedeutungen und durchweg hoeherem
+   Kontrast als vorher. badge-blue gab es fuer "offen" und fuer die Rolle
+   Mitarbeiter; beides ist kein Zustand, sondern eine Kategorie — die traegt
+   das Wort, nicht die Farbe. */
+.badge-red    { background: var(--gefahr-flaeche);  color: var(--gefahr);     } /* 6,2:1 */
+.badge-yellow { background: var(--warnung-flaeche); color: var(--warnung);    } /* 5,4:1 */
+.badge-green  { background: var(--ok-flaeche);      color: var(--ok);         } /* 5,8:1 */
+.badge-blue   { background: var(--papier-tief);     color: var(--tinte-matt); } /* 6,6:1 */
+.badge-gray   { background: var(--papier-tief);     color: var(--tinte-matt); } /* 6,6:1 */
+.badge-teal   { background: var(--akzent-flaeche);  color: var(--akzent);     } /* 7,0:1 */
+.badge-purple { background: var(--ki-flaeche);      color: var(--ki);         } /* 8,0:1 */
+
+/* .progress-bar / .progress-fill entfernt: keine einzige Verwendung im Projekt,
+   und .progress-fill animierte `width` (Layout-Thrash statt Compositor). */
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+}
+
+/* ─── Landing Page Animations ─── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero load-in helpers.
+
+   Die Staffelung war vorher deutlich langsamer: 0,8 s Dauer bei bis zu 820 ms
+   Verzoegerung, der Hero also erst nach ~1,62 s fertig. Weil
+   animation-fill-mode: both greift, stand die Ueberschrift die ersten 200 ms
+   auf opacity: 0 — sie ist aber das groesste Element im sichtbaren Bereich und
+   bestimmt damit den Largest Contentful Paint. Auf schneller Leitung war die
+   Seite laengst da und hat sich trotzdem beim Einblenden Zeit gelassen; das
+   fuehlt sich an wie eine langsame Seite, obwohl nichts mehr geladen wird.
+
+   Jetzt: gleiche Reihenfolge, aber der Hero steht nach ~0,55 s statt 1,62 s. */
+.land-fade-up   { animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Die Ueberschrift (d2) startet bewusst ohne Verzoegerung — jede Verzoegerung
+   darauf schlaegt eins zu eins auf den LCP durch. */
+.land-d1  { animation-delay:   0ms; }
+.land-d2  { animation-delay:   0ms; }
+.land-d3  { animation-delay:  60ms; }
+.land-d4  { animation-delay: 110ms; }
+.land-d5  { animation-delay: 160ms; }
+.land-d6  { animation-delay: 210ms; }
+
+/* Scroll-triggered transitions — state toggled by JS.
+   Der versteckte Ausgangszustand gilt NUR, wenn JavaScript läuft
+   ([data-js] wird synchron im <head> gesetzt). Ohne JS ist alles sofort da,
+   statt dauerhaft auf opacity:0 zu stehen. */
+[data-js] .scroll-hidden        { opacity: 0; transform: translateY(24px); }
+[data-js] .scroll-hidden-left   { opacity: 0; transform: translateX(-32px); }
+[data-js] .scroll-hidden-right  { opacity: 0; transform: translateX( 32px); }
+[data-js] .scroll-hidden-scale  { opacity: 0; transform: scale(0.95); }
+
+/* Ebenfalls gekuerzt (vorher 0,6-0,7 s): beim Scrollen lief der Inhalt der
+   Bewegung sonst spuerbar hinterher. */
+.scroll-hidden        { transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+.scroll-hidden-left,
+.scroll-hidden-right  { transition: opacity 0.42s cubic-bezier(0.16,1,0.3,1), transform 0.42s cubic-bezier(0.16,1,0.3,1); }
+.scroll-hidden-scale  { transition: opacity 0.38s cubic-bezier(0.16,1,0.3,1), transform 0.38s cubic-bezier(0.16,1,0.3,1); }
+
+[data-js] .scroll-visible,
+.scroll-visible       { opacity: 1; transform: none; }
+
+/* PPBV bar animation.
+   Die Breite steht fest (der Prozentwert); animiert wird nur die Skalierung.
+   .bar-fill hält die Leiste bis zum Sichtbarwerden auf 0 zusammengefaltet. */
+.bar-fill    { transform-origin: left center; transform: scaleX(0); }
+
+/* ─── Tastatur-Fokus, dunkle Flächen ──────────────────────────────────────────
+   Die eigentliche Fokus-Regel steht weiter oben bei den Tokens — hier steht nur
+   noch die Abweichung für dunkle Flächen.
+
+   Bis zum 16.09.2026 stand an dieser Stelle eine ZWEITE, vollständige
+   Fokus-Definition: türkis, 2px. Beide hatten die Spezifität (0,1,0) — :where()
+   trägt selbst nichts bei, gezählt hat die Pseudoklasse. Bei gleicher
+   Spezifität gewinnt, was später in der Datei steht. Der gelbe Ring, den das
+   Handbuch damals begründete, wurde also nie gerendert; sichtbar war immer der
+   türkise. Gefunden in der Sumi-Analyse (.sumi/next.md), aufgelöst am 16.09.
+
+   Damit wurde das Gelb zum ersten Mal sichtbar — und fiel sofort negativ auf.
+   Am 18.09.2026 ist die Ringfarbe deshalb zurück auf den Akzent gegangen; der
+   fehlende Kontrast auf gleichfarbigen Knöpfen wird jetzt über den hellen Spalt
+   gelöst statt über die Farbe (Begründung oben bei der Regel).
+
+   `focus:outline-none` steht 279 Mal im Code und erzeugt
+   `.focus\:outline-none:focus` mit Spezifität (0,2,0). Ohne gleich starke
+   Gegenregel gewinnt es, und der Ring fehlt genau dort, wo jemand ihn
+   absichtlich abgeschaltet hat — deshalb trägt die Regel oben beide Klassen
+   ausdrücklich mit. */
+
+/* Auf dunklen Flächen kehren sich beide Werte um: Das dunkle Akzentgrün
+   verschwindet dort, und ein Spalt in --papier wäre heller als der Ring. Also
+   trägt der Ring das aufgehellte Teal und der Spalt die Tinte des Grundes —
+   dieselbe Ordnung, nur andersherum. */
+.on-dark :focus-visible,
+.on-dark.focus\:outline-none:focus-visible,
+.on-dark.outline-none:focus-visible {
+  outline-color: var(--marke-hell);
+  box-shadow: 0 0 0 2px var(--tinte);
+}
+
+/* ─── Bewegung reduzieren ─────────────────────────────────────────────────────
+   Drei Animationen liefen einmal unbegrenzt (floatY 7s, glowPulse 2.5s,
+   shimmerSlide 3s) und alles unterhalb des Heros startete auf opacity:0. Für
+   Menschen mit vestibulärer Empfindlichkeit gab es keinen Ausweg — WCAG
+   2.3.3/2.2.2. Die drei Endlos-Animationen sind inzwischen ersatzlos entfernt
+   (Handbuch 6: Bewegung erklärt Veränderung, sie unterhält nicht); die Regel
+   unten bleibt, weil sie die Scroll-Reveals sichtbar hält.
+
+   Wichtig ist nicht nur „Animation aus", sondern dass die Scroll-Reveal-Inhalte
+   SICHTBAR bleiben: ohne das folgende opacity:1 wäre die halbe Landingpage für
+   diese Nutzer leer. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .scroll-hidden,
+  .scroll-hidden-left,
+  .scroll-hidden-right,
+  .scroll-hidden-scale,
+  .land-fade-up {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ─── Platz für den Einwilligungs-Hinweis ─────────────────────────────────────
+   Der Hinweis (components/CookieNotice.tsx) liegt fixiert am unteren Rand und
+   hat bis zum 15.09.2026 verdeckt, was dort stand. Auf /login war das bei
+   390 px Breite ausgerechnet „Noch kein Konto? Jetzt registrieren" — der Link
+   war halb verdeckt und erst nach dem Wegklicken des Hinweises erreichbar,
+   also genau auf dem Weg, der neue Nutzer aufnehmen soll.
+
+   Die Komponente meldet ihre gemessene Höhe als --cookie-hinweis-h; ist kein
+   Hinweis sichtbar, ist die Variable nicht gesetzt und der Fallback 0px greift.
+
+   Zwei Regeln, weil es zwei Fälle gibt: Seiten, die einfach scrollen (body),
+   und Seiten, die eine Fensterhöhe ausfüllen und ihren Inhalt darin zentrieren
+   — bei denen bringt zusätzlicher Platz UNTER dem Kasten nichts, der Kasten
+   selbst muss kürzer werden. */
+body {
+  padding-bottom: var(--cookie-hinweis-h, 0px);
+}
+
+.hoehe-ohne-hinweis {
+  min-height: calc(100svh - var(--cookie-hinweis-h, 0px));
+}
+
+/* ── Drucken ──────────────────────────────────────────────────────────────────
+   Bis zum 16.09.2026 gab es in diesem Projekt keine einzige Druckregel. Beim
+   ersten echten Druckversuch (Aufgaben-Codes) landete deshalb die ganze Seite auf
+   dem Papier: Kopfleiste, Menue, das Anlege-Formular — und die Etiketten klein in
+   einer Ecke. Auf ein Blatt Aufkleber gehoert nur der Aufkleber.
+
+   WARUM ES AN [data-druckbogen] HAENGT UND NICHT GLOBAL GILT:
+   Die Regel unten blendet alles aus und holt nur den Druckbogen zurueck. Stuende
+   sie ohne Bedingung da, druckte JEDE andere Seite dieser App ein leeres Blatt —
+   der Dienstplan, der Besetzungsnachweis, die Lohnabrechnung. Das `:has()` sorgt
+   dafuer, dass die Regel nur auf Seiten greift, die ueberhaupt einen Druckbogen
+   enthalten. Alle anderen drucken unveraendert wie bisher.
+
+   WARUM visibility UND NICHT display:
+   `display: none` auf allen Elementen wuerde auch den Druckbogen mitreissen, denn
+   er liegt INNERHALB der ausgeblendeten Huelle. `visibility` vererbt sich, laesst
+   sich aber am Kind wieder umkehren — der Bogen wird also sichtbar, obwohl seine
+   Eltern es nicht sind. Dass dabei der Platz der Huelle stehen bleibt, faengt das
+   `position: absolute` am Bogen ab: er beginnt oben links auf dem Blatt. */
+@media print {
+  @page {
+    size: A4 portrait;
+    /* Kein Rand aus dem Dokument — der Drucker hat seinen eigenen, und zwei
+       Raender uebereinander verschieben die Etiketten gegen die Schnittkante. */
+    margin: 8mm;
+  }
+
+  body:has([data-druckbogen]) * {
+    visibility: hidden;
+  }
+
+  body:has([data-druckbogen]) [data-druckbogen],
+  body:has([data-druckbogen]) [data-druckbogen] * {
+    visibility: visible;
+  }
+
+  body:has([data-druckbogen]) [data-druckbogen] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #fff;
+  }
+
+  /* Ein Etikett wird nie ueber zwei Blaetter getrennt — ein halber QR-Code ist
+     kein Aufkleber, sondern Papiermuell. */
+  [data-etikett] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Der QR-Code muss schwarz bleiben, auch wenn der Browser "Hintergrundgrafiken"
+     aus hat — sonst druckt er als leeres Quadrat. */
+  [data-etikett] svg {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

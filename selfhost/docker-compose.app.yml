@@ -1,0 +1,73 @@
+# Nurvo — Add-on zum offiziellen supabase/docker-Compose.
+# Fügt dem Supabase-Stack die App ("euer eigenes Vercel") + Reverse-Proxy (TLS) hinzu.
+#
+# Gemeinsam starten (aus dem geklonten supabase/docker-Verzeichnis):
+#   docker compose --env-file ./.env \
+#     -f docker-compose.yml \
+#     -f /PFAD/ZU/nurvo/selfhost/docker-compose.app.yml \
+#     up -d --build
+#
+# Beide Compose-Dateien landen im selben Projekt-Netzwerk → `app` erreicht `kong`/`db`
+# per Servicenamen. Relative Pfade (Build-Context, Caddyfile) sind relativ zu DIESER Datei.
+
+services:
+  app:
+    build:
+      context: ..                       # nurvo-Repo-Root (eine Ebene über selfhost/)
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${ANON_KEY}
+        NEXT_PUBLIC_SITE_URL: ${SITE_URL}
+    image: nurvo-app:latest
+    restart: unless-stopped
+    depends_on:
+      - kong
+    expose:
+      - "3000"
+    environment:
+      NODE_ENV: production
+      # Zeigt auf DEN EIGENEN Supabase-Stack (öffentliche db-Domain via Caddy → kong)
+      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY}
+      NEXT_PUBLIC_SITE_URL: ${SITE_URL}
+      APP_ORIGIN: ${SITE_URL}
+      NURVO_WEB: "1"                     # aktiviert den Web-Kill-Switch (platform_settings)
+      # App-Geheimnisse
+      CRON_SECRET: ${CRON_SECRET}
+      MOBILE_AUTH_SECRET: ${MOBILE_AUTH_SECRET}
+      ANALYTICS_HASH_SECRET: ${ANALYTICS_HASH_SECRET}
+      DEMO_LEITUNG_EMAIL: ${DEMO_LEITUNG_EMAIL:-}
+      DEMO_MITARBEITER_EMAIL: ${DEMO_MITARBEITER_EMAIL:-}
+      # KI: heute Anthropic; für self-hosted (Ollama/Gemma) einfach AI_* setzen — siehe lib/ai.ts
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-}
+      AI_PROVIDER: ${AI_PROVIDER:-}
+      AI_BASE_URL: ${AI_BASE_URL:-}
+      AI_MODEL: ${AI_MODEL:-}
+      AI_API_KEY: ${AI_API_KEY:-}
+      # E-Mail (EU-SMTP statt Resend) — optional, aber für Einladungen/Benachrichtigungen nötig
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      RESEND_FROM_EMAIL: ${RESEND_FROM_EMAIL:-}
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+      - kong
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}          # z. B. app.nurvo.app  → reverse_proxy app:3000
+      DB_DOMAIN: ${DB_DOMAIN}            # z. B. db.nurvo.app   → reverse_proxy kong:8000
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

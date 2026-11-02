@@ -47,28 +47,20 @@ export const REGELN: Regel[] = [
     { pfad: "/api/leitung/fehlzeiten", lesen: ["dienstplan", "ausfall", "zeiten"], schreiben: ["ausfall"] },
     { pfad: "/api/leitung/oncall-entries", lesen: ["dienstplan", "ausfall"], schreiben: ["dienstplan", "ausfall"] },
     ...[
-        "generate-plan", "shifts", "praxis-raster", "resync-shift-demand", "optimize-plan", "rebalance-overtime",
-        "monthly-ai-adjustments", "copilot", "stationsplanung", "staffing-needs", "belegung", "bereich-shifts",
+        "generate-plan", "shifts", "praxis-raster", "resync-shift-demand", "rebalance-overtime",
+        "stationsplanung", "staffing-needs", "belegung", "bereich-shifts",
         "bereich-shift-templates", "wishes", "shift-swap", "shift-swap-requests", "shift-release", "bereitschaft-nachplanen",
     ].map(p => ({ pfad: `/api/leitung/${p}`, schreiben: ["dienstplan"] as Recht[] })),
     { pfad: "/api/onboarding/generate-shifts", schreiben: ["dienstplan"] },
-    { pfad: "/api/onboarding/praxis-ki", schreiben: ["dienstplan"] },
     ...[
-        "vacation-requests", "krank", "springer", "reinforcement", "external-agencies", "emergency-plan",
-        "notfall-vorlagen", "nichterscheinen", "meldungen",
+        "vacation-requests", "krank", "springer", "reinforcement", "nichterscheinen", "meldungen",
     ].map(p => ({ pfad: `/api/leitung/${p}`, schreiben: ["ausfall"] as Recht[] })),
     { pfad: "/api/leitung/vacation-balances", lesen: ["ausfall", "team", "lohn"], schreiben: ["ausfall", "team"] },
-    { pfad: "/api/notfall/ausloesen", schreiben: ["ausfall"] },
     ...[
-        "invite-staff", "codes", "archive-staff", "assign-station", "personalakte", "certificates", "trainings", "burnout",
-    ].map(p => ({ pfad: `/api/leitung/${p}`, schreiben: ["team"] as Recht[] })),
+        "invite-staff", "codes", "archive-staff", "assign-station", ].map(p => ({ pfad: `/api/leitung/${p}`, schreiben: ["team"] as Recht[] })),
     { pfad: "/api/leitung/flextime-requests", schreiben: ["zeiten"] },
-    { pfad: "/api/leitung/lohnabrechnung", schreiben: ["lohn"] },
-    { pfad: "/api/leitung/payroll-template", schreiben: ["lohn"] },
-    { pfad: "/api/leitung/todo", schreiben: ["dienstplan", "ausfall"] },
     ...[
-        "anbindungen", "datenexport", "task-categories", "task-codes", "station-tasks", "aufgaben-export",
-    ].map(p => ({ pfad: `/api/leitung/${p}`, schreiben: ["einstellungen"] as Recht[] })),
+        "anbindungen", "datenexport", "task-categories", "station-tasks", ].map(p => ({ pfad: `/api/leitung/${p}`, schreiben: ["einstellungen"] as Recht[] })),
     { pfad: "/api/bereiche", schreiben: ["einstellungen"] },
     { pfad: "/api/leitung/mitarbeiter-rechte", schreiben: ["rechte"] },
 ];

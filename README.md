@@ -22,6 +22,12 @@
 
 Plane Dienste im Browser und lass Ruhezeit, Höchstarbeitszeit und Urlaub schon beim Planen prüfen. Die Daten liegen auf deinem eigenen Server. Nurvo sieht sie nicht, und die Software ruft keinen Nurvo-Server auf.
 
+<p align="center">
+  <img src="docs/bilder/1-dienstplan.png" width="240" alt="Nurvo Dienstplan auf dem Handy: Wochenansicht mit Regelprüfung für Ruhezeit, Höchstarbeitszeit und Urlaub">
+  <img src="docs/bilder/2-besetzung.png" width="240" alt="Nurvo Wochenübersicht: Besetzung je Praxisbereich, alle Schichten besetzt">
+  <img src="docs/bilder/3-wuensche.png" width="240" alt="Nurvo Mitarbeiter-Ansicht: Dienstwünsche und Verfügbarkeiten im Browser einreichen">
+</p>
+
 ## Was enthalten ist
 
 | | Community Edition | [Gehostet bei Nurvo](https://www.nurvo.de/preise) |

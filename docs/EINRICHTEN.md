@@ -4,7 +4,7 @@ art: Anleitung
 titel: Nurvo Community Edition einrichten
 untertitel: Der eigene Dienstplan für Ihre Praxis, in rund 30 Minuten
 empfaenger: Praxisinhaber, Praxismanagement und IT-Dienstleister von Arztpraxen und MVZ
-stand: 01.11.2026
+stand: 02.11.2026
 vertraulichkeit: Öffentlich
 absender: Nurvo (in Gründung)
 kolophon: |

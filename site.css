@@ -1,0 +1,65 @@
+/* Farben und Schriften aus nurvo/docs/DESIGN-HANDBUCH.md: Papier, Tinte, ein Akzent, keine Verläufe, keine Schatten. */
+@font-face { font-family: "Newsreader"; src: url(fonts/newsreader-latin.woff2) format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Geist"; src: url(fonts/geist-latin.woff2) format("woff2"); font-weight: 400 600; font-display: swap; }
+
+:root {
+  --papier: #FAF9F6; --papier-tief: #F2F1EC; --linie: #E3E1DA;
+  --tinte: #1A1D1C; --tinte-matt: #4E5755; --tinte-leise: #66706E;
+  --akzent: #0E5C55; --akzent-tief: #0A4640; --akzent-flaeche: #EDF4F2;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--papier); color: var(--tinte-matt);
+  font: 17px/1.7 "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.bahn { max-width: 46rem; margin: 0 auto; padding: 0 1.25rem; }
+a { color: var(--akzent); text-underline-offset: 3px; }
+a:hover { color: var(--akzent-tief); }
+:focus-visible { outline: 3px solid var(--akzent); outline-offset: 2px; }
+h1, h2, h3 { color: var(--tinte); font-family: "Newsreader", Georgia, serif; font-weight: 500; line-height: 1.2; }
+h1 { font-size: clamp(2.1rem, 6vw, 3rem); margin: .4rem 0 1.2rem; letter-spacing: -.01em; }
+h2 { font-size: 1.75rem; margin: 3.5rem 0 1rem; padding-top: 2.5rem; border-top: 1px solid var(--linie); }
+h3 { font-size: 1.25rem; margin: 1.8rem 0 .5rem; }
+p { margin: 0 0 1rem; }
+code { font: .9em ui-monospace, "Cascadia Mono", Menlo, monospace; background: var(--papier-tief); padding: .1em .35em; border-radius: 4px; white-space: nowrap; }
+
+.kopf { border-bottom: 1px solid var(--linie); }
+.kopf .bahn { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 3.75rem; flex-wrap: wrap; }
+.marke { font: 600 1.35rem "Geist", system-ui, sans-serif; color: var(--tinte); text-decoration: none; letter-spacing: -.02em; }
+.marke span { color: var(--akzent); }
+.kopf nav { display: flex; gap: 1.25rem; font-size: .95rem; }
+.kopf nav a { color: var(--tinte-matt); text-decoration: none; padding: .6rem 0; }
+.kopf nav a:hover { color: var(--tinte); text-decoration: underline; }
+
+.eyebrow { margin: 2.75rem 0 0; font-size: .85rem; letter-spacing: .06em; text-transform: uppercase; color: var(--tinte-leise); }
+.lead { font-size: 1.2rem; color: var(--tinte); }
+.aktionen { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.5rem; margin: 1.75rem 0 .5rem; }
+.knopf {
+  display: inline-block; background: var(--akzent); color: #fff; text-decoration: none;
+  font-weight: 600; padding: .8rem 1.5rem; border-radius: 999px; min-height: 44px;
+}
+.knopf:hover { background: var(--akzent-tief); color: #fff; }
+.klein { font-size: .9rem; color: var(--tinte-leise); }
+
+.bilder { display: flex; gap: 1rem; justify-content: center; margin: 2.5rem 0 0; flex-wrap: wrap; }
+.bilder figure { margin: 0; }
+.bilder img { display: block; width: min(240px, 42vw); height: auto; }
+
+ul.liste, ol.liste { padding-left: 1.2rem; }
+.liste li { margin-bottom: .7rem; }
+.liste strong { color: var(--tinte); }
+
+.tabelle { overflow-x: auto; margin: 1rem 0 1.5rem; }
+table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+th, td { text-align: left; padding: .6rem .75rem .6rem 0; border-bottom: 1px solid var(--linie); vertical-align: top; }
+th { color: var(--tinte); font-weight: 600; }
+td:not(:first-child), th:not(:first-child) { min-width: 8.5rem; }
+
+.hinweis { background: var(--akzent-flaeche); padding: 1.25rem 1.5rem; border-radius: 8px; margin: 2.5rem 0; }
+.hinweis p:last-child { margin-bottom: 0; }
+
+.fragen h3 { margin-top: 1.5rem; }
+
+.fuss { border-top: 1px solid var(--linie); margin-top: 4.5rem; padding: 2rem 0 3rem; font-size: .95rem; }
+.fuss p { margin-bottom: .6rem; }

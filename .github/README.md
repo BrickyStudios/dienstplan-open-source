@@ -19,6 +19,7 @@
   <a href="../docs/EINRICHTEN.md">Installation</a> ·
   <a href="../docs/pdf/Nurvo-Community-Einrichten.pdf">Anleitung als PDF</a> ·
   <a href="../docs/EINBINDEN.md">In die eigene Website einbinden</a> ·
+  <a href="https://brickystudios.github.io/dienstplan-open-source/">Projektseite</a> ·
   <a href="https://www.nurvo.de/dienstplan-open-source">Überblick auf nurvo.de</a> ·
   <a href="https://www.nurvo.de/preise">Gehostete Version</a>
 </p>

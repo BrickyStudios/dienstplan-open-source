@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://nextjs.org/"><img alt="Gebaut mit Next.js" src="https://img.shields.io/badge/gebaut_mit-Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"></a>
   <br>
-  <a href="../LICENSE"><img alt="Lizenz AGPL-3.0" src="https://img.shields.io/github/license/BrickyStudios/dienstplan-open-source?label=Lizenz&color=0E5C55"></a>
+  <a href="../LICENSE"><img alt="Lizenz PolyForm Shield 1.0.0" src="https://img.shields.io/badge/Lizenz-PolyForm%20Shield%201.0.0-0E5C55"></a>
   <a href="../docs/EINRICHTEN.md"><img alt="Self-Hosting mit Docker" src="https://img.shields.io/badge/Self--Hosting-Docker-0E5C55?logo=docker&logoColor=white"></a>
   <a href="https://supabase.com/"><img alt="Datenbank Supabase" src="https://img.shields.io/badge/Datenbank-Supabase-0E5C55?logo=supabase&logoColor=white"></a>
   <a href="https://www.nurvo.de/preise"><img alt="Gehostete Version" src="https://img.shields.io/badge/Gehostet-nurvo.de-0E5C55"></a>
@@ -23,7 +23,7 @@
   <a href="https://www.nurvo.de/preise">Gehostete Version</a>
 </p>
 
-Dieser Open-Source-Dienstplan läuft auf deinem eigenen Server. Plane Dienste im Browser und lass Ruhezeit, Höchstarbeitszeit und Urlaub schon beim Planen prüfen. Nurvo sieht deine Daten nicht, und die Software ruft keinen Nurvo-Server auf.
+Dieser quelloffene Dienstplan läuft auf deinem eigenen Server. Plane Dienste im Browser und lass Ruhezeit, Höchstarbeitszeit und Urlaub schon beim Planen prüfen. Nurvo sieht deine Daten nicht, und die Software ruft keinen Nurvo-Server auf.
 
 <p align="center">
   <img src="../docs/bilder/1-dienstplan.png" width="240" alt="Nurvo Dienstplan auf dem Handy: Wochenansicht mit Regelprüfung für Ruhezeit, Höchstarbeitszeit und Urlaub">
@@ -74,13 +74,15 @@ Nurvo ist entwickelt von **[Lilian Philipp Schiffer](https://github.com/IDKWTTAA
 
 ## Lizenz
 
-[AGPL-3.0](../LICENSE). Wer die Software verändert und als Dienst anbietet, muss den geänderten Quellcode offenlegen. Der Name Nurvo und das Logo sind von dieser Lizenz nicht umfasst.
+[PolyForm Shield 1.0.0](../LICENSE). Nutzen, für die eigene Praxis anpassen und weitergeben ist kostenlos erlaubt. Nicht erlaubt ist, die Software oder eine veränderte Fassung als Produkt oder Dienst anzubieten, der mit Nurvo konkurriert, auch nicht kostenlos. Der Quellcode ist offen, eine Open-Source-Lizenz im Sinne der Open Source Initiative ist das aber nicht. Der Name Nurvo und das Logo sind von der Lizenz nicht umfasst.
 
 ---
 
 <details><summary>English</summary>
 
-Nurvo Community Edition is an open-source, self-hosted staff scheduling tool for medical practices in Germany. It checks working-time rules while you plan and keeps all data on your own server. Overview (German): [nurvo.de/dienstplan-open-source](https://www.nurvo.de/dienstplan-open-source). The hosted version at [nurvo.de](https://www.nurvo.de/en) adds the native app, AI features and payroll.
+Nurvo Community Edition is a source-available, self-hosted staff scheduling tool for medical practices in Germany. It checks working-time rules while you plan and keeps all data on your own server. Overview (German): [nurvo.de/dienstplan-open-source](https://www.nurvo.de/dienstplan-open-source). The hosted version at [nurvo.de](https://www.nurvo.de/en) adds the native app, AI features and payroll.
+
+License: [PolyForm Shield 1.0.0](../LICENSE). Free to use, modify and share. Offering it, changed or unchanged, as a product or service that competes with Nurvo is not allowed.
 
 Built by **[Lilian Philipp Schiffer](https://github.com/IDKWTTAAN)** (lead developer, about 80 % of all commits) with co-founders Jonas Suthold and David. See [authors (PDF, German)](../Nurvo-Community-Autoren.pdf).
 

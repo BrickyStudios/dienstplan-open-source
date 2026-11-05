@@ -8,7 +8,7 @@ stand: 02.11.2026
 vertraulichkeit: Öffentlich
 absender: Nurvo (in Gründung)
 kolophon: |
-  Nurvo Community Edition, AGPL-3.0. Quelle dieses Dokuments: fuer-ki/SECURITY.md
+  Nurvo Community Edition, PolyForm Shield 1.0.0. Quelle dieses Dokuments: fuer-ki/SECURITY.md
   im Repository. Ergänzend gilt der Haftungsausschluss (Abschnitte 5 und 6).
 ---
 

@@ -8,7 +8,7 @@ stand: 02.11.2026
 vertraulichkeit: Öffentlich
 absender: Nurvo (in Gründung)
 kolophon: |
-  Nurvo Community Edition, AGPL-3.0. Entwickelt von Lilian Philipp Schiffer
+  Nurvo Community Edition, PolyForm Shield 1.0.0. Entwickelt von Lilian Philipp Schiffer
   und dem Nurvo-Team. Quelle dieses Dokuments: fuer-ki/README.md im Repository.
   Die gehostete Version mit App, KI und Betrieb durch uns: www.nurvo.de
 ---
@@ -79,7 +79,7 @@ Dienstplan unter einer Adresse wie `dienstplan.ihre-praxis.de`.
 | `Nurvo-Community-Haftungsausschluss.pdf` | was die Software leistet und was nicht |
 | `Nurvo-Community-Sicherheit.pdf` | Sicherheitslücken melden, Installation absichern |
 | `Nurvo-Community-Autoren.pdf` | wer Nurvo gebaut hat |
-| `LICENSE` | die Lizenz, GNU AGPL-3.0 |
+| `LICENSE` | die Lizenz, PolyForm Shield 1.0.0 |
 | `fuer-ki/` | dieselben Texte als Markdown, für eine KI, die beim Einrichten hilft |
 | alle übrigen Ordner | der Programmcode und die Datenbank-Vorlage |
 
@@ -132,6 +132,4 @@ ihm. Mitgründer sind Jonas Suthold und David. Alle Beteiligten stehen im Dokume
 
 ## Lizenz
 
-GNU AGPL-3.0, Volltext in der Datei `LICENSE`. Wer die Software verändert und als Dienst
-anbietet, muss den geänderten Quellcode offenlegen. Der Name Nurvo und das Logo sind von
-dieser Lizenz nicht umfasst.
+PolyForm Shield 1.0.0, Volltext in der Datei `LICENSE`. Sie dürfen die Software kostenlos nutzen, für Ihre Praxis anpassen und weitergeben. Nicht erlaubt ist, sie oder eine veränderte Fassung als Produkt oder Dienst anzubieten, der mit Nurvo konkurriert, auch nicht kostenlos. Der Quellcode ist offen, eine Open-Source-Lizenz im Sinne der Open Source Initiative ist das aber nicht. Der Name Nurvo und das Logo sind von der Lizenz nicht umfasst.

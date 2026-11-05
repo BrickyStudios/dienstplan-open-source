@@ -4,19 +4,19 @@ art: Rechtlicher Hinweis
 titel: Haftungsausschluss
 untertitel: Nurvo Community Edition, kostenlose und selbst betriebene Fassung
 empfaenger: alle, die die Nurvo Community Edition herunterladen, einrichten, betreiben oder verändern
-stand: 02.11.2026
+stand: 05.11.2026
 vertraulichkeit: Öffentlich
 absender: Nurvo (in Gründung)
 kolophon: |
-  Dieser Hinweis ergänzt die Lizenz (LICENSE, GNU AGPL-3.0) und ersetzt sie nicht.
+  Dieser Hinweis ergänzt die Lizenz (LICENSE, PolyForm Shield 1.0.0) und ersetzt sie nicht.
   Bei Widersprüchen gilt die Lizenz. Quelle: fuer-ki/HAFTUNGSAUSSCHLUSS.md im Repository.
 ---
 
 ## 1. Worum es geht
 
 Die Nurvo Community Edition („Software“) ist eine kostenlose, quelloffene Fassung der
-Dienstplanung Nurvo. Sie wird unter der **GNU Affero General Public License, Version 3**
-(AGPL-3.0) bereitgestellt. Wer die Software herunterlädt, einrichtet, betreibt oder
+Dienstplanung Nurvo. Sie wird unter der **PolyForm Shield License 1.0.0**
+bereitgestellt. Wer die Software herunterlädt, einrichtet, betreibt oder
 verändert, erkennt diesen Hinweis an.
 
 Die Software wird **unentgeltlich und so, wie sie ist** („as is“) überlassen. Die Urheber und
@@ -36,8 +36,7 @@ Soweit gesetzlich zulässig, übernimmt Nurvo **keine Gewähr** dafür, dass die
 - in künftigen Fassungen weiterentwickelt, gepflegt oder mit Sicherheitsupdates versorgt
   wird.
 
-Es gelten ergänzend die Abschnitte 15 („Disclaimer of Warranty“) und 16 („Limitation of
-Liability“) der AGPL-3.0.
+Es gilt ergänzend der Abschnitt „No Liability“ der Lizenz.
 
 ## 3. Haftungsbeschränkung
 
@@ -112,12 +111,13 @@ oder einem Rechenzentrum gelten ausschließlich deren Verträge mit dem Betreibe
 ## 8. Veränderte Fassungen
 
 Für Fassungen, die Dritte verändert, erweitert oder weiterverbreitet haben, übernimmt Nurvo
-keinerlei Verantwortung. Wer eine veränderte Fassung über ein Netzwerk anbietet, muss nach
-Abschnitt 13 der AGPL-3.0 den Quellcode seiner Fassung zugänglich machen.
+keinerlei Verantwortung. Wer eine veränderte Fassung weitergibt, gibt die Lizenz und die
+Zeilen „Required Notice“ mit. Ein Produkt oder Dienst, der mit Nurvo konkurriert, ist nicht
+erlaubt, auch verändert und auch kostenlos (Abschnitt „Noncompete“ der Lizenz).
 
 ## 9. Name und Logo
 
-„Nurvo“, die Wortmarke und das Logo sind **nicht** Teil der Open-Source-Lizenz. Sie dürfen
+„Nurvo“, die Wortmarke und das Logo sind **nicht** Teil der Lizenz. Sie dürfen
 in unveränderten Installationen stehen bleiben. Wer eine veränderte Fassung als eigenes
 Produkt oder als Dienst für Dritte anbietet, darf nicht den Eindruck erwecken, es handle
 sich um ein Angebot von Nurvo oder um eine von Nurvo geprüfte Fassung.

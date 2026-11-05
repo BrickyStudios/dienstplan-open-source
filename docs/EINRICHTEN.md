@@ -8,7 +8,7 @@ stand: 02.11.2026
 vertraulichkeit: Öffentlich
 absender: Nurvo (in Gründung)
 kolophon: |
-  Nurvo Community Edition, AGPL-3.0. Entwickelt von Lilian Philipp Schiffer
+  Nurvo Community Edition, PolyForm Shield 1.0.0. Entwickelt von Lilian Philipp Schiffer
   und dem Nurvo-Team. Quelle dieser Anleitung: docs/EINRICHTEN.md im Repository.
   Die gehostete Version mit App, KI und Betrieb durch uns: www.nurvo.de
 ---

@@ -115,18 +115,14 @@ export function computePpbvReport(shifts: PpbvShift[], exempt: Set<string>, year
         byType: [...a.byType.values()].sort((x, y) => (TYPE_ORDER[x.shift_type] ?? 99) - (TYPE_ORDER[y.shift_type] ?? 99)),
     }))
         .sort((a, b) => a.station.localeCompare(b.station, "de"));
-    const totals = stations.reduce<PpbvTotals>((t, s) => ({
-        shiftsCount: t.shiftsCount + s.shiftsCount,
-        plannedSum: t.plannedSum + s.plannedSum,
-        actualSum: t.actualSum + s.actualSum,
-        understaffedCount: t.understaffedCount + s.understaffedCount,
-        fulfilledShifts: t.fulfilledShifts + s.fulfilledShifts,
-        compliancePct: 0,
-        shiftQuotePct: 0,
-    }), { shiftsCount: 0, plannedSum: 0, actualSum: 0, understaffedCount: 0, fulfilledShifts: 0, compliancePct: 0, shiftQuotePct: 0 });
-    totals.compliancePct = pct(totals.actualSum, totals.plannedSum);
-    totals.shiftQuotePct = pct(totals.fulfilledShifts, totals.shiftsCount);
-    return { year, month, stations, totals };
+    return { year, month, stations, totals: summe(stations) };
+}
+function summe(stations: PpbvTotals[]): PpbvTotals {
+    const t = { shiftsCount: 0, plannedSum: 0, actualSum: 0, understaffedCount: 0, fulfilledShifts: 0 };
+    for (const s of stations)
+        for (const k of Object.keys(t) as (keyof typeof t)[])
+            t[k] += s[k];
+    return { ...t, compliancePct: pct(t.actualSum, t.plannedSum), shiftQuotePct: pct(t.fulfilledShifts, t.shiftsCount) };
 }
 export function monthRange(year: number, month: number): {
     from: string;
@@ -203,18 +199,7 @@ export function reportFromRecordRows(rows: PpbvRecordRow[], year: number, month:
         byType: normalizeByType(r.by_type),
     }))
         .sort((a, b) => a.station.localeCompare(b.station, "de"));
-    const totals = stations.reduce<PpbvTotals>((t, s) => ({
-        shiftsCount: t.shiftsCount + s.shiftsCount,
-        plannedSum: t.plannedSum + s.plannedSum,
-        actualSum: t.actualSum + s.actualSum,
-        understaffedCount: t.understaffedCount + s.understaffedCount,
-        fulfilledShifts: t.fulfilledShifts + s.fulfilledShifts,
-        compliancePct: 0,
-        shiftQuotePct: 0,
-    }), { shiftsCount: 0, plannedSum: 0, actualSum: 0, understaffedCount: 0, fulfilledShifts: 0, compliancePct: 0, shiftQuotePct: 0 });
-    totals.compliancePct = pct(totals.actualSum, totals.plannedSum);
-    totals.shiftQuotePct = pct(totals.fulfilledShifts, totals.shiftsCount);
-    return { year, month, stations, totals };
+    return { year, month, stations, totals: summe(stations) };
 }
 export function previousMonth(now = new Date()): {
     year: number;

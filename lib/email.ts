@@ -16,7 +16,7 @@ export async function sendInviteEmail({ to, staffName, facilityName, code, siteU
     const safeCode = escHtml(code);
     const registerUrl = `${siteUrl}/register?invite_code=${encodeURIComponent(code)}`;
     const { error } = await getResend().emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "Nurvo <einladung@nurvo.app>",
+        from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
         to,
         subject: `Deine Einladung zu Nurvo — ${facilityName}`,
         html: `
@@ -108,7 +108,7 @@ export async function sendPlanChangeEmail({ to, staffName, facilityName, effecti
     const safeEffective = escHtml(effectiveLabel);
     const items = changes.map(c => `<li style="margin:0 0 6px;font-size:14px;color:#45464d;">${escHtml(c)}</li>`).join("");
     const { error } = await getResend().emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "Nurvo <einladung@nurvo.app>",
+        from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
         to,
         subject: `Änderungen am Dienstplan ab ${effectiveLabel} — ${facilityName}`,
         html: `
@@ -154,7 +154,7 @@ export async function sendNewDeviceEmail({ to, userName, deviceName, facility, }
     const safeDeviceName = escHtml(deviceName);
     const safeFacility = escHtml(facility);
     const { error } = await getResend().emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "Nurvo <einladung@nurvo.app>",
+        from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
         to,
         subject: "Neues Gerät hat sich bei deinem Nurvo-Konto angemeldet",
         html: `
@@ -229,7 +229,7 @@ export async function sendWebsiteContactAck({ to, name }: {
     const greeting = name?.trim() ? `Hallo ${escHtml(name.trim().split(" ")[0])},` : "Hallo,";
     const from = process.env.RESEND_CONTACT_FROM
         ?? process.env.RESEND_FROM_EMAIL
-        ?? "Lilian Schiffer · Nurvo <kontakt@nurvo.app>";
+        ?? "Dienstplan <dienstplan@example.com>";
     const { error } = await getResend().emails.send({
         from,
         to,
@@ -293,7 +293,7 @@ export async function sendShiftAssignedEmail({ to, staffName, facilityName, date
         shift: escHtml(shiftLabel), station: escHtml(station), time: escHtml(timeLabel), reason: escHtml(reason),
     };
     const { error } = await getResend().emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "Nurvo <einladung@nurvo.app>",
+        from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
         to,
         subject: `Neue Schicht am ${dateLabel}: ${shiftLabel}, ${station}`,
         html: `
@@ -361,7 +361,7 @@ export async function sendCertificateReminderEmail({ to, staffName, certName, ex
         ? `dein Zertifikat <strong>${s.cert}</strong> ist abgelaufen. Bitte kümmere dich zeitnah um die Erneuerung.`
         : `dein Zertifikat <strong>${s.cert}</strong> läuft bald ab. Bitte kümmere dich rechtzeitig um die Erneuerung.`;
     const { error } = await getResend().emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "Nurvo <einladung@nurvo.app>",
+        from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
         to,
         subject,
         html: `
@@ -412,7 +412,7 @@ export async function sendMonthlyPlanEmail({ to, staffName, facilityName, monthL
         first: firstShiftLabel ? escHtml(firstShiftLabel) : null,
     };
     const { error } = await getResend().emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "Nurvo <einladung@nurvo.app>",
+        from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
         to,
         subject: `Dein Dienstplan für ${monthLabel} steht`,
         html: `
@@ -467,7 +467,7 @@ export async function sendNotfallEmail({ to, staffName, facilityName, titel, nac
         nachricht: escHtml(nachricht).replace(/\n/g, "<br>"), schicht: schicht ? escHtml(schicht) : "",
     };
     const { error } = await getResend().emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "Nurvo <einladung@nurvo.app>",
+        from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
         to,
         subject: `Notfall in ${facilityName}: ${titel}`,
         html: `

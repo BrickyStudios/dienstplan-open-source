@@ -372,7 +372,7 @@ export function befundeFuerModell(befunde: GuardFinding[], an: Anonymisierung, p
             `${wer ? ` | staffId=${wer}` : ""}${wo ? ` | shiftId=${wo}` : ""}`;
     }).join("\n");
 }
-type Vorschlag = {
+export type Besetzungsvorschlag = {
     zuteilungen: {
         shiftId: string;
         staffId: string;
@@ -384,7 +384,33 @@ type Vorschlag = {
     }[];
     zusammenfassung: string;
 };
-export function zurueckVorschlag<V extends Vorschlag>(v: V, an: Anonymisierung): V {
+export const BESETZUNGSVORSCHLAG_SCHEMA: Record<string, unknown> = {
+    type: "object",
+    properties: {
+        zuteilungen: {
+            type: "array",
+            items: {
+                type: "object",
+                properties: { shiftId: { type: "string" }, staffId: { type: "string" }, begruendung: { type: "string" } },
+                required: ["shiftId", "staffId", "begruendung"],
+                additionalProperties: false,
+            },
+        },
+        ausgeschlossen: {
+            type: "array",
+            items: {
+                type: "object",
+                properties: { staffId: { type: "string" }, grund: { type: "string" } },
+                required: ["staffId", "grund"],
+                additionalProperties: false,
+            },
+        },
+        zusammenfassung: { type: "string" },
+    },
+    required: ["zuteilungen", "ausgeschlossen", "zusammenfassung"],
+    additionalProperties: false,
+};
+export function zurueckVorschlag<V extends Besetzungsvorschlag>(v: V, an: Anonymisierung): V {
     return {
         ...v,
         zuteilungen: v.zuteilungen.map(z => ({

@@ -161,7 +161,7 @@ async function sendWishDeadlineNotification(admin: AdminClient, facilityName: st
             method: "POST",
             headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
             body: JSON.stringify({
-                from: "Nurvo <noreply@nurvo.app>",
+                from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
                 to: [email],
                 subject: betreff,
                 html: `
@@ -252,7 +252,7 @@ export async function runMonthlyKiCheck(admin: AdminClient, facilityName: string
                         method: "POST",
                         headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            from: "Nurvo <noreply@nurvo.app>",
+                            from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
                             to: [email],
                             subject: "KI-Empfehlungen für den nächsten Dienstplan",
                             headers: { "X-AI-Generated": "true" },
@@ -328,7 +328,7 @@ async function runMonthlyPayroll(admin: AdminClient, facilityName: string, month
                         method: "POST",
                         headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            from: "Nurvo <noreply@nurvo.app>",
+                            from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
                             to: [email],
                             subject: `Lohnabrechnung ${monthName} ist fertig`,
                             html: `<p>Die Lohnabrechnung für <strong>${monthName}</strong> wurde automatisch erstellt (${result.entryCount} Abrechnungen).</p>${fehlendSatz ? `<p><strong>Achtung:</strong>${fehlendSatz}</p>` : ""}<p>Bitte prüfen und die Löhne überweisen.</p><p>→ <a href="${absoluteUrl("/lohnabrechnung")}">Zur Lohnabrechnung</a></p>`,
@@ -517,7 +517,7 @@ export async function autoGeneratePlan(admin: AdminClient, facilityName: string,
                     method: "POST",
                     headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        from: "Nurvo <noreply@nurvo.app>",
+                        from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
                         to: [leitungEmail],
                         subject: `Dienstplan ${monthKey} wurde automatisch erstellt`,
                         html: `

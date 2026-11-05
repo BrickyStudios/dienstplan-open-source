@@ -41,7 +41,7 @@ export const SITE_ORIGIN = {
         "Layout, Farbsystem, Logo und Illustrationen",
         "Die Beispielansichten des Produkts auf der Startseite",
     ],
-    humanResponsible: "Lilian Philipp Schiffer",
+    humanResponsible: "Betreiber dieser Installation",
     humanRole: "Konzept, Fachinhalte, Prüfung und Freigabe jeder veröffentlichten Aussage. Die inhaltliche " +
         "Verantwortung liegt vollständig bei einem Menschen, nicht bei der KI.",
 } as const;
@@ -271,7 +271,7 @@ export function aiDisclosureDocument(origin: string = siteOrigin()) {
                 "gezeigten Produktansichten sind als Beispielansicht gekennzeichnete Attrappen mit " +
                 "erfundenen Daten.",
         },
-        contact: { name: SITE_ORIGIN.humanResponsible, email: "nurvo-shift@outlook.de" },
+        contact: { name: SITE_ORIGIN.humanResponsible, email: "" },
     };
 }
 export function siteAiJsonLd(origin: string = siteOrigin()) {

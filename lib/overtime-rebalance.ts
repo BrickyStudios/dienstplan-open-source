@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { rankReplacementCandidates, shiftHours, isoWeekKey, effectiveWeeklyLimit, type ReplacementCandidate, type ContractDefaults, type RawFacilityStaff, type RawProfile, type RawWish, type RawNightEntry, type RawAvailability, } from "@/lib/scheduling/generate-plan-core";
+import { rankReplacementCandidates, shiftHours, isoWeekKey, effectiveWeeklyLimit, pickContractDefaults, type ReplacementCandidate, type ContractDefaults, type RawFacilityStaff, type RawProfile, type RawWish, type RawNightEntry, type RawAvailability, } from "@/lib/scheduling/generate-plan-core";
 import { notifyLeitung } from "@/lib/notify";
 import { syncActualStaff } from "@/lib/scheduling/actual-staff";
 import { addDaysISO, berlinTodayISO } from "@/lib/date";
@@ -82,22 +82,6 @@ type Settings = {
     pause_threshold_minutes: number;
     contractDefaults: ContractDefaults;
 };
-const CONTRACT_DEFAULT_KEYS: (keyof ContractDefaults)[] = [
-    "default_max_shifts_per_week", "default_max_consecutive_days", "default_max_consecutive_nights",
-    "default_max_hours_per_shift", "default_min_rest_hours", "default_break_after_minutes",
-    "default_break_min", "default_max_holiday_shifts_per_month", "default_min_days_off_per_week",
-];
-function pickContractDefaults(data: Record<string, unknown> | null | undefined): ContractDefaults {
-    const out: ContractDefaults = {};
-    if (!data)
-        return out;
-    for (const k of CONTRACT_DEFAULT_KEYS) {
-        const v = data[k];
-        if (v != null)
-            (out as Record<string, unknown>)[k] = v;
-    }
-    return out;
-}
 async function loadSettings(admin: Admin, facilityName: string): Promise<Settings> {
     const fallback: Settings = { overtime_rebalance_mode: "off", overtime_limit_pct: 20, pause_threshold_minutes: 20, contractDefaults: {} };
     const { data } = await admin.from("facility_settings").select("*").eq("facility_name", facilityName).maybeSingle();

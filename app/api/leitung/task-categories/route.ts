@@ -2,13 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { resolveLeitung } from "@/lib/leitung-auth";
 import { admin } from "@/lib/admin-client";
 import { tabelleFehlt } from "@/lib/db-fehler";
+import { trimOrNull } from "@/lib/task-extras";
 const ACTIONS = ["reinigen", "austauschen", "desinfizieren", "reparieren", "sonstiges"];
 const SCOPES = ["station", "bereich", "both"];
 const MIGRATION_MSG = "Tabelle 'task_categories' fehlt — SQL-Migration 20260612 erforderlich.";
-function trimOrNull(v: unknown): string | null {
-    const s = typeof v === "string" ? v.trim() : "";
-    return s.length > 0 ? s : null;
-}
 function cleanChecklist(v: unknown): string[] {
     if (!Array.isArray(v))
         return [];

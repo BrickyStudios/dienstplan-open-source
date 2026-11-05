@@ -3,6 +3,7 @@ import { PulseLoader } from "@/components/PulseLoader";
 import { useState, useEffect } from "react";
 import { useLang, type TKey } from "@/lib/LanguageContext";
 import { useConfirm } from "@/components/ConfirmProvider";
+import { AUFGABEN_AKTIONEN } from "@/components/AufgabenZeile";
 export type TaskCategory = {
     id: string;
     name: string;
@@ -11,16 +12,6 @@ export type TaskCategory = {
     requires_signature: boolean;
     checklist: string[];
 };
-const ACTIONS: {
-    value: string;
-    key: TKey;
-}[] = [
-    { value: "reinigen", key: "tcat.actReinigen" },
-    { value: "austauschen", key: "tcat.actAustauschen" },
-    { value: "desinfizieren", key: "tcat.actDesinfizieren" },
-    { value: "reparieren", key: "tcat.actReparieren" },
-    { value: "sonstiges", key: "tcat.actSonstiges" },
-];
 const SCOPE_KEYS: Record<string, TKey> = { station: "tcat.scopeStations", bereich: "tcat.scopeBereiche", both: "tcat.scopeBoth" };
 const EMPTY_FORM = { name: "", scope: "both" as TaskCategory["scope"], default_action: "reinigen", requires_signature: false, checklist: [""] };
 export default function TaskCategoryManager({ onLoaded }: {
@@ -178,7 +169,7 @@ function CategoryForm({ form, setForm, onSave, onCancel, saving }: {
           <option value="bereich">{t("tcat.scopeBereicheOnly")}</option>
         </select>
         <select value={form.default_action} onChange={e => setForm(f => ({ ...f, default_action: e.target.value }))} className="px-2.5 py-1.5 border border-[var(--linie)] rounded-lg text-[13px] bg-[var(--papier)] focus:outline-none focus:ring-2 focus:ring-[var(--akzent)]/30">
-          {ACTIONS.map(a => <option key={a.value} value={a.value}>{t(a.key)}</option>)}
+          {AUFGABEN_AKTIONEN.map(a => <option key={a.value} value={a.value}>{t(a.key)}</option>)}
         </select>
         <button type="button" onClick={() => setForm(f => ({ ...f, requires_signature: !f.requires_signature }))} className={`inline-flex items-center gap-1 text-[13px] px-2.5 py-1.5 rounded-lg border transition-colors ${form.requires_signature ? "border-[var(--akzent)] bg-[var(--akzent-flaeche)] text-[var(--akzent)]" : "border-[var(--linie)] text-[var(--tinte-matt)] hover:bg-[var(--papier-tief)]"}`}>
           <span className="material-symbols-outlined" style={{ fontSize: 12 }}>draw</span>

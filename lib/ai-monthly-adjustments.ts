@@ -1,5 +1,6 @@
 import { isGermanHoliday } from "@/lib/holidays";
 import { aiModel, aiProvider, aiStructured, isAiConfigured, type AiUsage } from "@/lib/ai";
+import { oderNull } from "@/lib/ai-schema";
 import { befundeFuerModell, erstelleAnonymisierung, KUERZEL_HINWEIS, type Anonymisierung } from "@/lib/ai-anonym";
 import { aiContentMeta, type AiContentMeta } from "@/lib/ai-transparency";
 import { isoWeekKey } from "@/lib/scheduling/generate-plan-core";
@@ -146,7 +147,6 @@ export function pseudonymisiereKandidaten(staff: RealKandidat[]): Pseudonymisier
     });
     return { kandidaten, mapping };
 }
-const oderNull = (schema: Record<string, unknown>) => ({ anyOf: [schema, { type: "null" }] });
 export type AdjustmentProposalItem = {
     shiftId: string;
     staffId: string;

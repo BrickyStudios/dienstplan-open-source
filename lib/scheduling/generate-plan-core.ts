@@ -234,6 +234,22 @@ export type ContractDefaults = {
     default_max_holiday_shifts_per_month?: number | null;
     default_min_days_off_per_week?: number | null;
 };
+const CONTRACT_DEFAULT_KEYS: (keyof ContractDefaults)[] = [
+    "default_max_shifts_per_week", "default_max_consecutive_days", "default_max_consecutive_nights",
+    "default_max_hours_per_shift", "default_min_rest_hours", "default_break_after_minutes",
+    "default_break_min", "default_max_holiday_shifts_per_month", "default_min_days_off_per_week",
+];
+export function pickContractDefaults(data: Record<string, unknown> | null | undefined): ContractDefaults {
+    const out: ContractDefaults = {};
+    if (!data)
+        return out;
+    for (const k of CONTRACT_DEFAULT_KEYS) {
+        const v = data[k];
+        if (v != null)
+            (out as Record<string, unknown>)[k] = v;
+    }
+    return out;
+}
 export type RawProfile = {
     id: string;
     full_name: string;

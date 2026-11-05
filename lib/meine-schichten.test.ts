@@ -19,12 +19,12 @@ describe("meineSchichten", () => {
     });
     it("trennt zwei Personen gleichen Namens über die Kennung (25.10.2026)", () => {
         const z = [
-            { shift_id: "a", staff_name: "Lilian Schiffer", staff_id: "leitung" },
-            { shift_id: "b", staff_name: "Lilian Schiffer", staff_id: "test" },
-            { shift_id: "c", staff_name: "Lilian Schiffer", staff_id: null },
+            { shift_id: "a", staff_name: "Erika Muster", staff_id: "leitung" },
+            { shift_id: "b", staff_name: "Erika Muster", staff_id: "test" },
+            { shift_id: "c", staff_name: "Erika Muster", staff_id: null },
         ];
-        expect(meineSchichten(schichten, z, "Lilian Schiffer", "test")).toEqual([{ id: "b" }, { id: "c" }]);
-        expect(meineSchichten(schichten, z, "Lilian Schiffer", "leitung")).toEqual([{ id: "a" }, { id: "c" }]);
+        expect(meineSchichten(schichten, z, "Erika Muster", "test")).toEqual([{ id: "b" }, { id: "c" }]);
+        expect(meineSchichten(schichten, z, "Erika Muster", "leitung")).toEqual([{ id: "a" }, { id: "c" }]);
     });
 });
 describe("istMeine", () => {

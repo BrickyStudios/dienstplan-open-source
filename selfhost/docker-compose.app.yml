@@ -61,8 +61,8 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      APP_DOMAIN: ${APP_DOMAIN}          # z. B. app.nurvo.app  → reverse_proxy app:3000
-      DB_DOMAIN: ${DB_DOMAIN}            # z. B. db.nurvo.app   → reverse_proxy kong:8000
+      APP_DOMAIN: ${APP_DOMAIN}          # z. B. app.deine-praxis.de  → reverse_proxy app:3000
+      DB_DOMAIN: ${DB_DOMAIN}            # z. B. db.deine-praxis.de   → reverse_proxy kong:8000
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

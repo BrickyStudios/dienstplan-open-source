@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Lädt das Nurvo-Schema + alle Migrationen in die laufende Selfhost-DB.
+# Lädt das Nurvo-Schema in die laufende Selfhost-DB.
 # Voraussetzung: der Supabase-Stack läuft (db + auth sind hochgefahren), damit das `auth`-Schema
 # (auf das FKs zeigen) bereits existiert.
 #
@@ -21,10 +21,5 @@ psql -c "select version();" >/dev/null
 echo "→ Basis-Schema (supabase/schema.sql)…"
 psql < "$NURVO_REPO/supabase/schema.sql"
 
-echo "→ Migrationen (supabase/migrations/*.sql, in Reihenfolge)…"
-for f in $(ls "$NURVO_REPO"/supabase/migrations/*.sql | sort); do
-  echo "   • $(basename "$f")"
-  psql < "$f"
-done
 
 echo "✓ DB-Bootstrap abgeschlossen."

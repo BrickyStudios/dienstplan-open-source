@@ -3,16 +3,9 @@ import { resolveLeitung } from "@/lib/leitung-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { errMsg } from "@/lib/db-fehler";
 import { deriveShiftType } from "@/lib/scheduling/shift-demand";
-async function resolveContext(req: NextRequest): Promise<{
-    facilityName: string;
-    isAdmin: boolean;
-} | null> {
-    const ctx = await resolveLeitung(req);
-    return ctx ? { facilityName: ctx.facilityName, isAdmin: ctx.isAdmin } : null;
-}
 export async function GET(req: NextRequest) {
     try {
-        const ctx = await resolveContext(req);
+        const ctx = await resolveLeitung(req);
         if (!ctx)
             return NextResponse.json({ error: "Keine Berechtigung" }, { status: 403 });
         const { searchParams } = new URL(req.url);
@@ -36,7 +29,7 @@ export async function GET(req: NextRequest) {
 }
 export async function POST(req: NextRequest) {
     try {
-        const ctx = await resolveContext(req);
+        const ctx = await resolveLeitung(req);
         if (!ctx)
             return NextResponse.json({ error: "Keine Berechtigung" }, { status: 403 });
         const body = await req.json();
@@ -66,7 +59,7 @@ export async function POST(req: NextRequest) {
 }
 export async function PATCH(req: NextRequest) {
     try {
-        const ctx = await resolveContext(req);
+        const ctx = await resolveLeitung(req);
         if (!ctx)
             return NextResponse.json({ error: "Keine Berechtigung" }, { status: 403 });
         const body = await req.json();
@@ -103,7 +96,7 @@ export async function PATCH(req: NextRequest) {
 }
 export async function DELETE(req: NextRequest) {
     try {
-        const ctx = await resolveContext(req);
+        const ctx = await resolveLeitung(req);
         if (!ctx)
             return NextResponse.json({ error: "Keine Berechtigung" }, { status: 403 });
         const { id } = await req.json();

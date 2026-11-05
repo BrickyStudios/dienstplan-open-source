@@ -115,6 +115,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Overlay der Community Edition: wird erst im exportierten Stand gebaut.
+    "community/**",
   ]),
 ]);
 

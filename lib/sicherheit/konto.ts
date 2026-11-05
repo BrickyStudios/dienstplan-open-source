@@ -65,7 +65,7 @@ async function sendeWarnung(an: string, a: Anmeldung): Promise<void> {
         return;
     const { subject, html } = neueAnmeldungMailText(a);
     const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "Nurvo <einladung@nurvo.app>",
+        from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
         to: [an],
         subject,
         html,

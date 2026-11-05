@@ -1,7 +1,7 @@
 import { resolveRequestUser } from "@/lib/resolveRequestUser";
 import { NextRequest, NextResponse } from "next/server";
 import { viewerStatus } from "@/lib/demo-auth";
-import { insertWithOptional, updateWithOptional } from "@/lib/task-extras";
+import { insertWithOptional, trimOrNull, updateWithOptional } from "@/lib/task-extras";
 import { signatureConfirmationText } from "@/lib/task-signature";
 import { cleanChecklistInstance } from "@/lib/task-category";
 import { admin } from "@/lib/admin-client";
@@ -47,10 +47,6 @@ async function demoBereichResponse(ctx: StaffCtx) {
     return NextResponse.json({ bereiche, tasks: tRes.data ?? [], working: true, demo: true, permissions: perms, vacation, wishes });
 }
 const ACTIONS = ["reinigen", "austauschen", "desinfizieren", "reparieren", "sonstiges"];
-function trimOrNull(v: unknown): string | null {
-    const s = typeof v === "string" ? v.trim() : "";
-    return s.length > 0 ? s : null;
-}
 async function leaderReviewData(facility: string, ledBereichIds: string[], perms: LeaderPermissions) {
     const vacation: Record<string, LeaderVacationRequest[]> = {};
     const wishes: Record<string, LeaderWish[]> = {};

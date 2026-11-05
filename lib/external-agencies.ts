@@ -49,7 +49,7 @@ async function sendOneAgencyRequest(admin: Admin, facilityName: string, leitungN
     if (dbErr)
         return;
     const { error: mailFehler } = await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? "Nurvo <einladung@nurvo.app>",
+        from: process.env.RESEND_FROM_EMAIL ?? "Dienstplan <dienstplan@example.com>",
         to: agency.email,
         subject: `Personalanfrage für ${sickDate} — ${facilityName}`,
         html: `<!DOCTYPE html>

@@ -1,4 +1,0 @@
-Contact: mailto:nurvo-shift@outlook.de
-Expires: 2027-09-30T22:00:00.000Z
-Preferred-Languages: de, en
-Canonical: https://www.nurvo.de/.well-known/security.txt

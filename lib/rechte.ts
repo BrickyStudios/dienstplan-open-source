@@ -57,10 +57,12 @@ export const REGELN: Regel[] = [
     ].map(p => ({ pfad: `/api/leitung/${p}`, schreiben: ["ausfall"] as Recht[] })),
     { pfad: "/api/leitung/vacation-balances", lesen: ["ausfall", "team", "lohn"], schreiben: ["ausfall", "team"] },
     ...[
-        "invite-staff", "codes", "archive-staff", "assign-station", ].map(p => ({ pfad: `/api/leitung/${p}`, schreiben: ["team"] as Recht[] })),
+        "invite-staff", "codes", "archive-staff", "assign-station",
+    ].map(p => ({ pfad: `/api/leitung/${p}`, schreiben: ["team"] as Recht[] })),
     { pfad: "/api/leitung/flextime-requests", schreiben: ["zeiten"] },
     ...[
-        "anbindungen", "datenexport", "task-categories", "station-tasks", ].map(p => ({ pfad: `/api/leitung/${p}`, schreiben: ["einstellungen"] as Recht[] })),
+        "anbindungen", "datenexport", "task-categories", "station-tasks",
+    ].map(p => ({ pfad: `/api/leitung/${p}`, schreiben: ["einstellungen"] as Recht[] })),
     { pfad: "/api/bereiche", schreiben: ["einstellungen"] },
     { pfad: "/api/leitung/mitarbeiter-rechte", schreiben: ["rechte"] },
 ];

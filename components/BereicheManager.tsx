@@ -2,7 +2,7 @@
 import { PulseLoader } from "@/components/PulseLoader";
 import { useState, useEffect } from "react";
 import TaskCategoryManager, { type TaskCategory } from "@/components/TaskCategoryManager";
-import AufgabenZeile, { AUFGABEN_AKTIONEN } from "@/components/AufgabenZeile";
+import { AufgabenFormFelder, AufgabenListe, LeitungsZeile } from "@/components/AufgabenZeile";
 import { useLang } from "@/lib/LanguageContext";
 import { useConfirm } from "@/components/ConfirmProvider";
 import { PRESET_COLORS } from "@/lib/colors";
@@ -75,7 +75,6 @@ export default function BereicheManager() {
     const [taskForm, setTaskForm] = useState({ ...EMPTY_TASK });
     const [taskLocOpen, setTaskLocOpen] = useState(false);
     const [addingTask, setAddingTask] = useState(false);
-    const [showDone, setShowDone] = useState<string | null>(null);
     const [busyTaskId, setBusyTaskId] = useState<string | null>(null);
     const [assignModal, setAssignModal] = useState<string | null>(null);
     const [modalSearch, setModalSearch] = useState("");
@@ -98,11 +97,6 @@ export default function BereicheManager() {
         setTasks(tRes.tasks ?? []);
         setRegStaff(sRes.staff ?? []);
         setLoading(false);
-    }
-    async function load() {
-        setLoading(true);
-        setError("");
-        uebernehmen(await holen());
     }
     useEffect(() => {
         let aktiv = true;
@@ -306,7 +300,6 @@ export default function BereicheManager() {
                 const bMembers = members.filter(m => m.bereich_id === b.id);
                 const bTasks = tasks.filter(t => t.bereich_id === b.id);
                 const openTasks = bTasks.filter(t => t.status !== "done");
-                const doneTasks = bTasks.filter(t => t.status === "done");
                 const expanded = expandedId === b.id;
                 const editing = editId === b.id;
                 return (<div key={b.id} className="rounded-xl border border-[var(--linie)] bg-[var(--papier-tief)] overflow-hidden">
@@ -379,19 +372,11 @@ export default function BereicheManager() {
                           </button>
                         </div>
                         {bMembers.length === 0 ? (<p className="text-[13px] text-[var(--tinte-matt)]">{t("bm.noneAssigned")}</p>) : (<div className="space-y-1.5">
-                            {bMembers.map(m => (<div key={m.id} className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${m.is_leader ? "border-[var(--linie)] bg-[var(--warnung-flaeche)]" : "border-[var(--linie)] bg-[var(--papier-tief)]"}`}>
-                                <span className="text-[13px] text-[var(--tinte)] flex-1 truncate">{m.staff_name}</span>
-                                {m.is_leader && (<span className="text-[13px] font-semibold uppercase tracking-wider text-[var(--warnung)] bg-[var(--warnung-flaeche)] px-1.5 py-0.5 rounded-full flex items-center gap-0.5 flex-shrink-0">
-                                    <span className="material-symbols-outlined" style={{ fontSize: 11, fontVariationSettings: "'FILL' 1" }}>star</span>{t("stm.leaderBadge")}
-                                  </span>)}
-                                <button onClick={() => toggleLeader(b.id, m.user_id, !m.is_leader)} className={`flex items-center gap-1 text-[13px] font-semibold px-2.5 py-1 rounded-lg border transition-colors flex-shrink-0 ${m.is_leader ? "border-[var(--linie)] text-[var(--tinte-matt)] hover:bg-[var(--papier-tief)]" : "border-[var(--akzent)] text-[var(--akzent)] hover:bg-[var(--akzent-flaeche)]"}`}>
-                                  <span className="material-symbols-outlined" style={{ fontSize: 12 }}>{m.is_leader ? "remove" : "star"}</span>
-                                  {m.is_leader ? t("stm.removeLeader") : t("stm.makeLeader")}
-                                </button>
+                            {bMembers.map(m => (<LeitungsZeile key={m.id} name={m.staff_name} leitung={!!m.is_leader} onUmschalten={() => toggleLeader(b.id, m.user_id, !m.is_leader)}>
                                 <button onClick={() => unassign(b.id, m.user_id)} title={t("bm.removeFromBereich")} className="p-1 rounded-lg text-[var(--tinte-matt)] hover:text-[var(--gefahr)] hover:bg-[var(--gefahr-flaeche)] transition-colors flex-shrink-0">
                                   <span className="material-symbols-outlined" style={{ fontSize: 14 }}>close</span>
                                 </button>
-                              </div>))}
+                              </LeitungsZeile>))}
                           </div>)}
                         <p className="text-[13px] text-[var(--tinte-matt)] mt-2">{t("bm.leaderNotePre")}<strong>{t("bm.leaderNoteBold")}</strong>{t("bm.leaderNotePost")}</p>
                       </div>
@@ -399,42 +384,7 @@ export default function BereicheManager() {
                       
                       <div className="rounded-xl border border-[var(--linie)] bg-[var(--papier-tief)] p-3 space-y-3">
                         <p className="text-[13px] font-semibold uppercase tracking-wider text-[var(--akzent)]">{t("stm.newTask")}</p>
-                        {bereichCategories.length > 0 && (<select value={taskForm.category_id} onChange={e => {
-                                const cat = bereichCategories.find(c => c.id === e.target.value);
-                                setTaskForm(f => ({
-                                    ...f, category_id: e.target.value,
-                                    action: cat ? cat.default_action : f.action,
-                                    requires_signature: cat ? cat.requires_signature : f.requires_signature,
-                                }));
-                            }} className="w-full px-3 py-2 border border-[var(--linie)] rounded-lg text-[13px] bg-[var(--papier-tief)] focus:outline-none focus:ring-2 focus:ring-[var(--akzent)]/30">
-                            <option value="">{t("stm.noTemplate")}</option>
-                            {bereichCategories.map(c => <option key={c.id} value={c.id}>{t("stm.templatePrefix")} {c.name}{c.checklist.length ? ` (${c.checklist.length} ${t("stm.stepsSuffix")})` : ""}</option>)}
-                          </select>)}
-                        <input type="text" value={taskForm.title} onChange={e => setTaskForm(f => ({ ...f, title: e.target.value }))} placeholder={t("bm.taskPlaceholder")} className="w-full px-3 py-2 border border-[var(--linie)] rounded-lg text-[13px] bg-[var(--papier)] focus:outline-none focus:ring-2 focus:ring-[var(--akzent)]/30"/>
-
-                        {taskLocOpen && (<div className="grid grid-cols-2 gap-2">
-                            <input type="text" value={taskForm.building} onChange={e => setTaskForm(f => ({ ...f, building: e.target.value }))} placeholder={t("stm.building")} className="px-3 py-2 border border-[var(--linie)] rounded-lg text-[13px] bg-[var(--papier)] focus:outline-none focus:ring-2 focus:ring-[var(--akzent)]/30"/>
-                            <input type="text" value={taskForm.station} onChange={e => setTaskForm(f => ({ ...f, station: e.target.value }))} placeholder={t("ui.station")} className="px-3 py-2 border border-[var(--linie)] rounded-lg text-[13px] bg-[var(--papier)] focus:outline-none focus:ring-2 focus:ring-[var(--akzent)]/30"/>
-                            <input type="text" value={taskForm.room} onChange={e => setTaskForm(f => ({ ...f, room: e.target.value }))} placeholder={t("stm.room")} className="px-3 py-2 border border-[var(--linie)] rounded-lg text-[13px] bg-[var(--papier)] focus:outline-none focus:ring-2 focus:ring-[var(--akzent)]/30"/>
-                            <input type="text" value={taskForm.bed} onChange={e => setTaskForm(f => ({ ...f, bed: e.target.value }))} placeholder={t("stm.bed")} className="px-3 py-2 border border-[var(--linie)] rounded-lg text-[13px] bg-[var(--papier)] focus:outline-none focus:ring-2 focus:ring-[var(--akzent)]/30"/>
-                          </div>)}
-
-                        <div className="flex items-center gap-2 flex-wrap">
-                          {!taskLocOpen && (<button type="button" onClick={() => setTaskLocOpen(true)} className="inline-flex items-center gap-1 text-[13px] text-[var(--tinte-matt)] hover:text-[var(--tinte-matt)] border border-dashed border-[var(--linie)] hover:border-[var(--tinte-matt)] px-2 py-1 rounded-lg transition-colors">
-                              <span className="material-symbols-outlined" style={{ fontSize: 12 }}>add_location</span> {t("bm.addLocationBereich")}
-                            </button>)}
-                          <select value={taskForm.action} onChange={e => setTaskForm(f => ({ ...f, action: e.target.value }))} className="px-2.5 py-1.5 border border-[var(--linie)] rounded-lg text-[13px] bg-[var(--papier)] focus:outline-none focus:ring-2 focus:ring-[var(--akzent)]/30">
-                            {AUFGABEN_AKTIONEN.map(a => <option key={a.value} value={a.value}>{t(a.key)}</option>)}
-                          </select>
-                          <button type="button" onClick={() => setTaskForm(f => ({ ...f, priority: f.priority === "hoch" ? "normal" : "hoch" }))} className={`inline-flex items-center gap-1 text-[13px] px-2.5 py-1.5 rounded-lg border transition-colors ${taskForm.priority === "hoch" ? "border-[var(--gefahr)] bg-[var(--gefahr-flaeche)] text-[var(--gefahr)]" : "border-[var(--linie)] text-[var(--tinte-matt)] hover:bg-[var(--papier-tief)]"}`}>
-                            <span className="material-symbols-outlined" style={{ fontSize: 12 }}>priority_high</span>
-                            {taskForm.priority === "hoch" ? t("stm.urgent") : t("stm.urgentQ")}
-                          </button>
-                          <button type="button" onClick={() => setTaskForm(f => ({ ...f, requires_signature: !f.requires_signature }))} title={t("stm.sigTitle")} className={`inline-flex items-center gap-1 text-[13px] px-2.5 py-1.5 rounded-lg border transition-colors ${taskForm.requires_signature ? "border-[var(--akzent)] bg-[var(--akzent-flaeche)] text-[var(--akzent)]" : "border-[var(--linie)] text-[var(--tinte-matt)] hover:bg-[var(--papier-tief)]"}`}>
-                            <span className="material-symbols-outlined" style={{ fontSize: 12 }}>draw</span>
-                            {t("tcat.signature")} {taskForm.requires_signature ? t("tcat.sigRequired") : "?"}
-                          </button>
-                        </div>
+                        <AufgabenFormFelder form={taskForm} setForm={setTaskForm} kategorien={bereichCategories} ortOffen={taskLocOpen} setOrtOffen={setTaskLocOpen} titelPlatzhalter={t("bm.taskPlaceholder")} ortKnopf={t("bm.addLocationBereich")}/>
 
                         <button onClick={() => addTask(b.id)} disabled={addingTask || !taskForm.title.trim()} className="flex items-center gap-2 px-4 py-2 text-white text-[13px] font-semibold rounded-lg bg-[var(--akzent)] hover:bg-[var(--akzent-tief)] transition-colors disabled:opacity-50">
                           {addingTask ? <PulseLoader size={13}/> : <span className="material-symbols-outlined" style={{ fontSize: 13 }}>add_task</span>}
@@ -442,24 +392,7 @@ export default function BereicheManager() {
                         </button>
                       </div>
 
-                      
-                      {openTasks.length > 0 && (<div className="space-y-2">
-                          <p className="text-[13px] font-semibold uppercase tracking-wider text-[var(--tinte-matt)]">{t("stm.openTasks")} ({openTasks.length})</p>
-                          {openTasks.map(ot => (<AufgabenZeile key={ot.id} task={ot} busy={busyTaskId === ot.id} onToggle={() => toggleTask(ot)} onDelete={() => deleteTask(ot.id)}/>))}
-                        </div>)}
-
-                      
-                      {doneTasks.length > 0 && (<div>
-                          <button onClick={() => setShowDone(prev => prev === b.id ? null : b.id)} className="text-[13px] text-[var(--tinte-matt)] hover:text-[var(--tinte-matt)] flex items-center gap-1">
-                            <span className="material-symbols-outlined" style={{ fontSize: 13 }}>{showDone === b.id ? "expand_less" : "expand_more"}</span>
-                            {doneTasks.length} {t("stm.doneWord")}
-                          </button>
-                          {showDone === b.id && (<div className="space-y-2 mt-2">
-                              {doneTasks.map(dt => (<AufgabenZeile key={dt.id} task={dt} busy={busyTaskId === dt.id} onToggle={() => toggleTask(dt)} onDelete={() => deleteTask(dt.id)}/>))}
-                            </div>)}
-                        </div>)}
-
-                      {openTasks.length === 0 && doneTasks.length === 0 && (<p className="text-[13px] text-[var(--tinte-matt)] text-center py-2">{t("bm.noTasks")}</p>)}
+                      <AufgabenListe aufgaben={bTasks} busyId={busyTaskId} onToggle={toggleTask} onDelete={deleteTask} leerText={t("bm.noTasks")}/>
                     </div>)}
                 </div>);
             })}

@@ -1,16 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { resolveStationStaff, leaderStations, stationAdmin, type StationStaffCtx } from "@/lib/mein-station-auth";
-import { insertWithOptional, updateWithOptional } from "@/lib/task-extras";
+import { insertWithOptional, trimOrNull, updateWithOptional } from "@/lib/task-extras";
 import { signatureConfirmationText } from "@/lib/task-signature";
 import { cleanChecklistInstance } from "@/lib/task-category";
 import { spalteFehlt, tabelleFehlt } from "@/lib/db-fehler";
 import { berlinMonatsBereich } from "@/lib/date";
 import { getLeaderPermissions, pendingVacationFor, openWishesFor, type LeaderPermissions, type LeaderVacationRequest, type LeaderWish, } from "@/lib/leader-permissions";
 const ACTIONS = ["reinigen", "austauschen", "desinfizieren", "reparieren", "sonstiges"];
-function trimOrNull(v: unknown): string | null {
-    const s = typeof v === "string" ? v.trim() : "";
-    return s.length > 0 ? s : null;
-}
 async function leadershipData(ctx: StationStaffCtx, ledStations: string[], perms: LeaderPermissions) {
     const presence: Record<string, {
         user_name: string | null;

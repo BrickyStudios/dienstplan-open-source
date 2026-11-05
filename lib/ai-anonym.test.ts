@@ -16,8 +16,8 @@ const stamm = {
     ],
     stationen: ["Kardiologie 3B", "Station 2", "Wohnbereich Rosengarten"],
     qualifikationen: ["examiniert", "Wundexperte ICW"],
-    sondertage: ["Stadtfest Hürth", "Karneval"],
-    einrichtung: ["Klinikum Hürth", "Hürth"],
+    sondertage: ["Stadtfest Lindenau", "Karneval"],
+    einrichtung: ["Marien-Klinikum Lindenau", "Lindenau"],
 };
 const an = erstelleAnonymisierung(stamm);
 const neu = () => erstelleAnonymisierung(stamm);
@@ -45,10 +45,10 @@ describe("bekannt() — alles aus den Stammdaten wird zum Kürzel", () => {
     it("kodiert Stationen, Qualifikationen und Sondertage, auch über einen Namensteil", () => {
         expect(an.bekannt("Kardiologie 3B und die Kardiologie")).toBe("S01 und die S01");
         expect(an.bekannt("Rosengarten braucht Wundexperte ICW")).toBe("S03 braucht Q02");
-        expect(an.bekannt("zum Stadtfest Hürth")).toBe("zum T01");
+        expect(an.bekannt("zum Stadtfest Lindenau")).toBe("zum T01");
     });
     it("schwärzt die Einrichtung", () => {
-        expect(an.bekannt("Klinikum Hürth, Haus in Hürth")).toBe("[Einrichtung], Haus in [Einrichtung]");
+        expect(an.bekannt("Marien-Klinikum Lindenau, Haus in Lindenau")).toBe("[Einrichtung], Haus in [Einrichtung]");
     });
 });
 describe("freitext() — nur Wörter, die sicher kein Name sind", () => {
@@ -110,7 +110,7 @@ describe("pruefeAusgang() — die Schranke vor dem Senden", () => {
         expect(sicher(an.freitext("Sarah Lorenz fällt im Frühdienst auf der Kardiologie aus, Frau Kowalski kommt."))).not.toThrow();
     });
     it("hält Namen, Stationen, Sondertage, Einrichtung und Ort auf", () => {
-        for (const t of ["Sarah Lorenz", "Yılmaz", "Kardiologie 3B", "Rosengarten", "Stadtfest Hürth", "Klinikum", "Hürth", "Wundexperte ICW"]) {
+        for (const t of ["Sarah Lorenz", "Yılmaz", "Kardiologie 3B", "Rosengarten", "Stadtfest Lindenau", "Klinikum", "Lindenau", "Wundexperte ICW"]) {
             expect(sicher(`Text mit ${t} darin`)).toThrow(AusgangsschrankeError);
         }
     });

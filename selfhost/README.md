@@ -45,6 +45,8 @@ Danach **`.env` öffnen** und setzen/prüfen:
 - In der Supabase-Sektion außerdem `SITE_URL`/`API_EXTERNAL_URL` konsistent halten und die von der
   jeweiligen Supabase-Version verlangten Felder füllen (die `.env.example` von supabase/docker listet sie).
 - `RESEND_*` bzw. SMTP für E-Mails; optional `ANTHROPIC_API_KEY` oder `AI_*` (KI).
+- `ENABLE_EMAIL_AUTOCONFIRM=true`, solange kein SMTP-Server für Supabase eingetragen ist. Sonst
+  wartet jede Registrierung auf eine Bestätigungsmail, die nie ankommt.
 
 > Doppelte Keys vermeiden: falls `.env.example` von Supabase bereits `ANON_KEY`/`SERVICE_ROLE_KEY`/
 > `JWT_SECRET`/`POSTGRES_PASSWORD` enthält, die **von gen-keys.mjs** erzeugten Werte gewinnen lassen

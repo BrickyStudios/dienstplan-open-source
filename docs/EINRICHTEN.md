@@ -4,7 +4,7 @@ art: Anleitung
 titel: Nurvo Community Edition einrichten
 untertitel: Der eigene Dienstplan für Ihre Praxis, in rund 30 Minuten
 empfaenger: Praxisinhaber, Praxismanagement und IT-Dienstleister von Arztpraxen und MVZ
-stand: 02.11.2026
+stand: 10.11.2026
 vertraulichkeit: Öffentlich
 absender: Nurvo (in Gründung)
 kolophon: |
@@ -59,8 +59,14 @@ eine Kopie in Ihrem eigenen GitHub-Konto. Mit dieser Kopie arbeiten alle folgend
 4. Im Projekt links den **SQL Editor** öffnen.
 5. Die Datei `supabase/schema.sql` aus Ihrer Kopie öffnen, den gesamten Inhalt kopieren, in
    den SQL Editor einfügen und **Run** klicken.
+6. Links **Authentication → Sign In / Providers** öffnen, beim Anbieter **Email** den Schalter
+   **Confirm email** ausschalten und speichern.
 
 Damit stehen alle Tabellen, Rollen und Zugriffsregeln, die Nurvo braucht.
+
+> **Warum Schritt 6:** Ohne eigenen Mail-Server verschickt Supabase Bestätigungsmails nur an
+> Mitglieder Ihres Supabase-Kontos. Ihr Team bekäme sie nie und käme nicht in das eigene
+> Konto. Wer sich anmelden darf, regelt Nurvo ohnehin über den Einladungscode.
 
 ## Schritt 3: Die drei Schlüssel abholen
 
@@ -94,8 +100,11 @@ Vercel. Es gibt keine weitere Konfigurationsdatei, die Sie bearbeiten müssen.
 
 Danach **Deploy** klicken. Nach wenigen Minuten läuft die Web-App unter einer Vercel-Adresse.
 
-Optional, aber empfohlen: Damit Einladungen und Passwort-Mails ankommen, zusätzlich einen
-Mail-Dienst eintragen.
+Optional: ein Mail-Dienst, damit Nurvo Einladungscodes und Benachrichtigungen per E-Mail
+verschickt. Ohne ihn zeigt die Web-App jeden Einladungscode an, und die Leitung gibt ihn
+selbst weiter, etwa per Messenger oder ausgedruckt. Ein vergessenes Passwort setzt jede
+Person mit der Wiederherstellungs-Phrase zurück, die sie bei der Registrierung bekommt.
+Dafür braucht es keine E-Mail.
 
 | Variable | Wert |
 |---|---|

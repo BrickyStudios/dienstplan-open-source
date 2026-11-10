@@ -529,8 +529,7 @@ function RegisterForm() {
 
               
               <p className="text-[13px] text-[var(--tinte-leise)] text-center leading-relaxed">
-                {!invitedFlow && !isDemo && (<>Mit der Registrierung gelten unsere{" "}.{" "}</>)}
-                Wie wir Ihre Daten verarbeiten, steht in der{" "}.
+                Wie Ihre Daten verarbeitet werden, erfahren Sie bei der Stelle, die diesen Dienst betreibt.
               </p>
 
               {!invitedFlow && (<button type="button" onClick={() => setStep("code")} className="w-full text-sm text-[var(--tinte-leise)] hover:text-[var(--tinte-matt)] text-center">

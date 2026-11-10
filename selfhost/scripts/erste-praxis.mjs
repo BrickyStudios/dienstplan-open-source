@@ -11,7 +11,7 @@ if (!name || !SUPABASE_URL || !SERVICE_ROLE_KEY) {
   process.exit(1);
 }
 const db = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, { auth: { persistSession: false } });
-const { data: praxis, error } = await db.from("facilities").insert({ name }).select().single();
+const { data: praxis, error } = await db.from("facilities").insert({ name, city: "" }).select().single();
 if (error) throw error;
 const zeichen = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const code = "NRV-L-" + Array.from({ length: 10 }, () => zeichen[randomInt(zeichen.length)]).join("");
